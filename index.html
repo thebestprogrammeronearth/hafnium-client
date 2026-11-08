@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hafnium Client</title>
+  <meta name="description" content="Hafnium is a free, open-source Fabric client for Minecraft Java 1.21.11 with a clean ClickGUI, world utilities and a permission-aware automation core.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/site.css">
+  <script src="js/site.js" defer></script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./"><span class="tile"><small>72</small>Hf</span>Hafnium</a>
+    <nav class="nav">
+      <a href="#features">Features</a>
+      <a href="#install">Install</a>
+      <a href="#faq">FAQ</a>
+      <a data-link="source" href="https://github.com/thebestprogrammeronearth/hafnium-client">GitHub</a>
+      <a class="btn small" data-link="download" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">Download</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="wrap hero">
+    <span class="badge accent">Free &amp; open source &middot; Minecraft Java 1.21.11 &middot; Fabric</span>
+    <h1>A client that stays out of your way.</h1>
+    <p class="lead">Hafnium is a Fabric client with a fast, clean ClickGUI and an automation core built around one rule:
+      it only does what you, and the server, allow.</p>
+    <div class="actions">
+      <a class="btn" data-link="download" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">Download for free</a>
+      <a class="btn ghost" data-link="source" href="https://github.com/thebestprogrammeronearth/hafnium-client">View the source</a>
+      <a class="btn ghost hidden" data-link="donate" href="#">Support the project</a>
+    </div>
+    <div class="shot"><img src="img/clickgui.png" width="1672" height="941" alt="The Hafnium ClickGUI: category panels over a Minecraft world"></div>
+  </div>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What's in Hafnium today</h2>
+        <p>Exactly this list. Items marked <em>in development</em> aren't in the current version yet.</p>
+      </div>
+      <div class="grid" id="feature-grid"></div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="wrap">
+      <div class="section-head"><h2>Install in three steps</h2></div>
+      <div class="card price-card">
+        <span class="badge accent">GPL-3.0 &middot; no account, no key</span>
+        <ul>
+          <li>Install <a href="https://fabricmc.net/use/">Fabric Loader</a> for Minecraft 1.21.11 and put
+            <a href="https://modrinth.com/mod/fabric-api">Fabric API</a> in your <code>mods</code> folder.</li>
+          <li>Download the Hafnium jar from <a data-link="download" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">GitHub Releases</a> and put it in <code>mods</code> too.</li>
+          <li>Start the game and press <strong>Right Shift</strong> to open the ClickGUI.</li>
+        </ul>
+        <a class="btn" data-link="download" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">Download</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap narrow">
+      <div class="section-head"><h2>Questions</h2></div>
+      <details>
+        <summary>Is it really free?</summary>
+        <p>Yes. Hafnium is free and open source under the GNU GPL v3. You can read, change and share the code; if you
+          share a modified version, its source must stay open too.</p>
+      </details>
+      <details>
+        <summary>What do I need?</summary>
+        <p>Minecraft: Java Edition 1.21.11, Fabric Loader 0.18 or newer and Fabric API. Java 21 comes with the official
+          launcher. SpotifyHUD works on Linux only (it reads Spotify's desktop media session).</p>
+      </details>
+      <details>
+        <summary>Can I use it on servers?</summary>
+        <p>Hafnium works on normal servers without any plugin, but many servers forbid modified clients, X-ray-style
+          tools, macros or automated selling. Hafnium shows what each server allows and keeps autonomous actions off
+          unless you host the world or the server authorizes them, but it doesn't hide itself and can't protect you
+          from a server's rules, anticheat or bans. Check the rules of every server you play on.</p>
+      </details>
+      <details>
+        <summary>Does the Ancient Debris Finder see through walls?</summary>
+        <p>It only marks ancient debris your game has already received from the server. It never guesses or reveals
+          hidden blocks, so on servers with anti-xray it finds little or nothing.</p>
+      </details>
+      <details>
+        <summary>How can I help?</summary>
+        <p>Report bugs and send pull requests on <a data-link="source" href="https://github.com/thebestprogrammeronearth/hafnium-client">GitHub</a>.</p>
+      </details>
+      <details>
+        <summary>Is this made by Mojang?</summary>
+        <p>No. Hafnium is an independent project and is not affiliated with, approved by or associated with Mojang or
+          Microsoft.</p>
+      </details>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>Hafnium Client &middot; free software under the GPL-3.0. Not an official Minecraft product. Not approved by or
+      associated with Mojang or Microsoft.</div>
+    <nav>
+      <a data-link="source" href="https://github.com/thebestprogrammeronearth/hafnium-client">Source</a>
+      <a data-link="issues" href="https://github.com/thebestprogrammeronearth/hafnium-client/issues">Report a bug</a>
+      <a data-link="license" href="https://github.com/thebestprogrammeronearth/hafnium-client/blob/main/LICENSE">License</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
