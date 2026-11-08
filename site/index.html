@@ -2,109 +2,232 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Hafnium Client</title>
-  <meta name="description" content="Hafnium is a free, open-source Fabric client for Minecraft Java 1.21.11 with a clean ClickGUI, world utilities and a permission-aware automation core.">
+  <meta name="description" content="Hafnium is a free, open-source Fabric client for Minecraft Java 1.21.11: a fast purple ClickGUI, world utilities and an automation core that only does what you and the server allow.">
+  <meta name="theme-color" content="#15131C">
+  <meta property="og:title" content="Hafnium Client">
+  <meta property="og:description" content="Free, open-source Fabric client for Minecraft Java 1.21.11.">
+  <meta property="og:image" content="https://thebestprogrammeronearth.github.io/hafnium-client/img/clickgui.png">
+  <meta property="og:type" content="website">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/site.css">
   <script src="js/site.js" defer></script>
 </head>
 <body>
-<header class="top">
-  <div class="wrap">
-    <a class="brand" href="./"><span class="tile"><small>72</small>Hf</span>Hafnium</a>
-    <nav class="nav">
+<header class="top" id="top">
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="Hafnium home"><span class="tile"><small>72</small>Hf</span><span>Hafnium</span></a>
+    <nav class="nav" id="nav">
+      <a href="#demo">Try it</a>
       <a href="#features">Features</a>
+      <a href="#safety">Safety</a>
+      <a href="#roadmap">Roadmap</a>
       <a href="#install">Install</a>
       <a href="#faq">FAQ</a>
-      <a data-link="source" href="https://github.com/thebestprogrammeronearth/hafnium-client">GitHub</a>
-      <a class="btn small" data-link="download" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">Download</a>
     </nav>
+    <a class="gh" data-link="source" href="https://github.com/thebestprogrammeronearth/hafnium-client" aria-label="GitHub repository">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.66.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      <span data-stars></span>
+    </a>
+    <a class="btn small" data-link="download" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">Download</a>
+    <button class="menu" id="menu" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span><span></span></button>
   </div>
 </header>
+
 <main>
-  <div class="wrap hero">
-    <span class="badge accent">Free &amp; open source &middot; Minecraft Java 1.21.11 &middot; Fabric</span>
-    <h1>A client that stays out of your way.</h1>
-    <p class="lead">Hafnium is a Fabric client with a fast, clean ClickGUI and an automation core built around one rule:
-      it only does what you, and the server, allow.</p>
-    <div class="actions">
-      <a class="btn" data-link="download" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">Download for free</a>
-      <a class="btn ghost" data-link="source" href="https://github.com/thebestprogrammeronearth/hafnium-client">View the source</a>
-      <a class="btn ghost hidden" data-link="donate" href="#">Support the project</a>
+  <section class="hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap">
+      <a class="pill" data-link="release" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">
+        <span class="dot"></span><span data-version>Latest release</span> · free &amp; open source</a>
+      <h1>The Minecraft client that <br><span class="grad">plays by the rules.</span></h1>
+      <p class="lead">A fast purple ClickGUI, world utilities and an automation core that only does what you, and the
+        server, allow. Fabric · Minecraft Java 1.21.11 · GPL-3.0.</p>
+      <div class="actions">
+        <a class="btn big" data-link="download" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download <span class="meta" data-asset-meta></span></a>
+        <a class="btn ghost big" href="#demo">Try the ClickGUI</a>
+        <a class="btn ghost big hidden" data-link="donate" href="#">Support the project</a>
+      </div>
+      <ul class="facts">
+        <li><strong>0</strong> accounts or keys</li>
+        <li><strong>100%</strong> open source</li>
+        <li><strong>Every</strong> feature tested in-game</li>
+      </ul>
     </div>
-    <div class="shot"><img src="img/clickgui.png" width="1672" height="941" alt="The Hafnium ClickGUI: category panels over a Minecraft world"></div>
-  </div>
+  </section>
+
+  <section id="demo" class="demo-section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Interactive</span>
+        <h2>Try the ClickGUI right here</h2>
+        <p>Drag panels, fold them, search, and click modules. It's a web copy of the real menu. Modules marked
+          <span class="tag soon">soon</span> are placeholders in the current release.</p>
+      </div>
+      <div class="screen" id="screen">
+        <div class="screen-top">
+          <div class="logo-tile"><small>72</small>Hf</div>
+          <div class="screen-title">Hafnium Client</div>
+          <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input id="demo-search" type="search" placeholder="Search…" autocomplete="off" aria-label="Search modules"></label>
+          <button class="reset" id="demo-reset" type="button">Reset layout</button>
+        </div>
+        <div class="panels" id="panels"></div>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </div>
+      <p class="hint">Tip: in the game, press <kbd>Right Shift</kbd> to open it and <kbd>End</kbd> for the emergency stop.</p>
+    </div>
+  </section>
 
   <section id="features">
     <div class="wrap">
       <div class="section-head">
-        <h2>What's in Hafnium today</h2>
-        <p>Exactly this list. Items marked <em>in development</em> aren't in the current version yet.</p>
+        <span class="eyebrow">In the current release</span>
+        <h2>Built for how you actually play</h2>
+        <p>Everything here works today and is checked by automated in-game tests.</p>
       </div>
-      <div class="grid" id="feature-grid"></div>
+      <div class="bento" id="feature-grid"></div>
+    </div>
+  </section>
+
+  <section id="safety" class="safety">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Safety model</span>
+        <h2>Three tiers. You always know which one you're in.</h2>
+        <p>A HUD indicator shows, per server, what Hafnium may do there and why. Joining a server always resets to
+          Manual, and <kbd>End</kbd> stops everything.</p>
+      </div>
+      <div class="tiers">
+        <article class="tier t1">
+          <span class="num">1</span>
+          <h3>Client-side</h3>
+          <p>HUDs, overlays, maps, analysis and planning. Uses only what your game already received.</p>
+          <div class="where">Works everywhere</div>
+        </article>
+        <article class="tier t2">
+          <span class="num">2</span>
+          <h3>Assistance</h3>
+          <p>Actions you start and supervise, like walking a planned route. Off on a server until you confirm its rules allow it.</p>
+          <div class="where">Assist mode + your Server Profile</div>
+        </article>
+        <article class="tier t3">
+          <span class="num">3</span>
+          <h3>Automation</h3>
+          <p>Hands-off tasks such as timed selling or exploration. Normal server packets never count as permission.</p>
+          <div class="where">Your own world, or an explicit server grant</div>
+        </article>
+      </div>
+      <p class="fine">No anticheat bypasses, no hiding. Hafnium can't know every server's rules and can't protect you from
+        bans: check the rules before using a module on someone else's server.</p>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Roadmap</span>
+        <h2>What's shipped, what's next</h2>
+        <p>Updated with every release. Nothing on the right is in the download yet.</p>
+      </div>
+      <div class="roadmap">
+        <div class="lane"><h3><span class="dot ok"></span>Shipped</h3><ul id="lane-ok"></ul></div>
+        <div class="lane"><h3><span class="dot dev"></span>In development</h3><ul id="lane-dev"></ul></div>
+      </div>
     </div>
   </section>
 
   <section id="install">
     <div class="wrap">
-      <div class="section-head"><h2>Install in three steps</h2></div>
-      <div class="card price-card">
-        <span class="badge accent">GPL-3.0 &middot; no account, no key</span>
-        <ul>
-          <li>Install <a href="https://fabricmc.net/use/">Fabric Loader</a> for Minecraft 1.21.11 and put
-            <a href="https://modrinth.com/mod/fabric-api">Fabric API</a> in your <code>mods</code> folder.</li>
-          <li>Download the Hafnium jar from <a data-link="download" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">GitHub Releases</a> and put it in <code>mods</code> too.</li>
-          <li>Start the game and press <strong>Right Shift</strong> to open the ClickGUI.</li>
-        </ul>
-        <a class="btn" data-link="download" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">Download</a>
+      <div class="section-head">
+        <span class="eyebrow">Install</span>
+        <h2>Running in two minutes</h2>
       </div>
+      <ol class="steps">
+        <li>
+          <span class="n">1</span>
+          <div><h3>Install Fabric</h3>
+            <p>Get <a href="https://fabricmc.net/use/">Fabric Loader</a> for Minecraft <strong>1.21.11</strong>, and put
+              <a href="https://modrinth.com/mod/fabric-api">Fabric API</a> in your <code>mods</code> folder.</p></div>
+        </li>
+        <li>
+          <span class="n">2</span>
+          <div><h3>Add Hafnium</h3>
+            <p>Download the jar and drop it in <code>mods</code> too.</p>
+            <a class="btn small" data-link="download" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">Download <span data-version-short></span></a></div>
+        </li>
+        <li>
+          <span class="n">3</span>
+          <div><h3>Press Right Shift</h3>
+            <p>Start the game with the Fabric profile and open the ClickGUI.</p></div>
+        </li>
+      </ol>
+      <details class="build">
+        <summary>Build it yourself</summary>
+        <div class="code"><pre id="build-cmd">git clone https://github.com/thebestprogrammeronearth/hafnium-client
+cd hafnium-client
+./gradlew build      # jar in build/libs/</pre><button class="copy" data-copy="build-cmd" type="button">Copy</button></div>
+        <p>Needs JDK 21.</p>
+      </details>
     </div>
   </section>
 
   <section id="faq">
     <div class="wrap narrow">
-      <div class="section-head"><h2>Questions</h2></div>
+      <div class="section-head"><span class="eyebrow">FAQ</span><h2>Questions</h2></div>
       <details>
         <summary>Is it really free?</summary>
-        <p>Yes. Hafnium is free and open source under the GNU GPL v3. You can read, change and share the code; if you
-          share a modified version, its source must stay open too.</p>
-      </details>
-      <details>
-        <summary>What do I need?</summary>
-        <p>Minecraft: Java Edition 1.21.11, Fabric Loader 0.18 or newer and Fabric API. Java 21 comes with the official
-          launcher. SpotifyHUD works on Linux only (it reads Spotify's desktop media session).</p>
+        <p>Yes. Hafnium is free and open source under the GNU GPL v3. Read, change and share the code; if you share a
+          modified version, its source must stay open too.</p>
       </details>
       <details>
         <summary>Can I use it on servers?</summary>
-        <p>Hafnium works on normal servers without any plugin, but many servers forbid modified clients, X-ray-style
-          tools, macros or automated selling. Hafnium shows what each server allows and keeps autonomous actions off
-          unless you host the world or the server authorizes them, but it doesn't hide itself and can't protect you
-          from a server's rules, anticheat or bans. Check the rules of every server you play on.</p>
+        <p>It runs on normal servers without any plugin, but many servers forbid modified clients, X-ray-style tools,
+          macros or automated selling. Hafnium keeps automation off unless you host the world or the server authorizes it,
+          but it doesn't hide itself and can't protect you from a server's rules, anticheat or bans.</p>
       </details>
       <details>
-        <summary>Does the Ancient Debris Finder see through walls?</summary>
-        <p>It only marks ancient debris your game has already received from the server. It never guesses or reveals
-          hidden blocks, so on servers with anti-xray it finds little or nothing.</p>
+        <summary>Do the finders see through walls?</summary>
+        <p>No. Every finder only uses blocks and entities your game has already received from the server. Nothing is
+          guessed or revealed, so on servers with anti-xray they find little.</p>
+      </details>
+      <details>
+        <summary>What about SpotifyHUD on Windows or macOS?</summary>
+        <p>Not yet: it reads Spotify's Linux desktop media session (MPRIS). Other systems show "no backend".</p>
       </details>
       <details>
         <summary>How can I help?</summary>
-        <p>Report bugs and send pull requests on <a data-link="source" href="https://github.com/thebestprogrammeronearth/hafnium-client">GitHub</a>.</p>
+        <p>Report bugs and send pull requests on <a data-link="source" href="https://github.com/thebestprogrammeronearth/hafnium-client">GitHub</a>.
+          Please run the tests first.</p>
       </details>
       <details>
         <summary>Is this made by Mojang?</summary>
-        <p>No. Hafnium is an independent project and is not affiliated with, approved by or associated with Mojang or
-          Microsoft.</p>
+        <p>No. Hafnium is an independent project, not affiliated with, approved by or associated with Mojang or Microsoft.</p>
       </details>
     </div>
   </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <h2>Ready when you are.</h2>
+      <div class="actions">
+        <a class="btn big" data-link="download" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases/latest">Download Hafnium</a>
+        <a class="btn ghost big" data-link="source" href="https://github.com/thebestprogrammeronearth/hafnium-client">Star on GitHub</a>
+      </div>
+    </div>
+  </section>
 </main>
+
 <footer>
-  <div class="wrap">
-    <div>Hafnium Client &middot; free software under the GPL-3.0. Not an official Minecraft product. Not approved by or
-      associated with Mojang or Microsoft.</div>
+  <div class="wrap foot">
+    <div class="brand small"><span class="tile"><small>72</small>Hf</span><span>Hafnium Client</span></div>
+    <p>Free software under the GPL-3.0. Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.</p>
     <nav>
       <a data-link="source" href="https://github.com/thebestprogrammeronearth/hafnium-client">Source</a>
+      <a data-link="release" href="https://github.com/thebestprogrammeronearth/hafnium-client/releases">Releases</a>
       <a data-link="issues" href="https://github.com/thebestprogrammeronearth/hafnium-client/issues">Report a bug</a>
       <a data-link="license" href="https://github.com/thebestprogrammeronearth/hafnium-client/blob/main/LICENSE">License</a>
     </nav>
