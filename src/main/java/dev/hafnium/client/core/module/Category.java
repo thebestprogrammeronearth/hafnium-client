@@ -4,10 +4,7 @@ import java.util.Locale;
 
 /** Module categories, in their default left-to-right order. */
 public enum Category {
-    COMBAT("Combat"),
-    MOVEMENT("Movement"),
     RENDER("Render"),
-    PLAYER("Player"),
     MISC("Misc"),
     WORLD("World"),
     AUTOMATION("Automation"),

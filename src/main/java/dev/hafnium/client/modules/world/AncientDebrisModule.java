@@ -17,6 +17,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.storage.LevelResource;
 
 public final class AncientDebrisModule extends Module {
+    private final dev.hafnium.client.hud.LayoutElement hud = new dev.hafnium.client.hud.LayoutElement(
+            "debris-list", "Debris List", () -> isEnabled() && this.labels.get(), 0f, 0f, 5f, 132f);
     public final NumberSetting distance = setting(new NumberSetting("Distance", 128, 16, 512, 16));
     public final NumberSetting width = setting(new NumberSetting("Outline width", 2, 1, 5, .5));
     public final ColorSetting color = setting(new ColorSetting("Outline color", 0xFFB77CFF));
@@ -66,18 +68,23 @@ public final class AncientDebrisModule extends Module {
             if (!labels.get() || Minecraft.getInstance().options.hideGui || Minecraft.getInstance().player == null)
                 return;
             var mc = Minecraft.getInstance();
-            // Stack under the Capabilities panel instead of drawing over it.
-            int y = Math.max(8, (int) Math.ceil(HafniumCore.get().modules()
-                    .get(dev.hafnium.client.modules.client.CapabilitiesModule.class).bottom()) + 8);
+            if (visible.isEmpty())
+                return;
+            var g = e.graphics();
+            hud.beginVanilla(g);
+            int y = 2, widest = 0;
             for (var d : visible.stream().limit(6).toList()) {
                 double meters =
                         Math.sqrt(Pos.distSq(d.key().pos(), mc.player.getX(), mc.player.getY(), mc.player.getZ()));
                 String text = (d.waypoint() ? "★ " : "") + "Debris " + Math.round(meters) + "m · "
                         + Pos.toString(d.key().pos()) + (d.stale() ? " [stale]" : " [observed]");
-                e.graphics().fill(5, y - 2, 10 + mc.font.width(text), y + 10, 0xBB15131C);
-                e.graphics().drawString(mc.font, text, 8, y, d.stale() ? 0xFF888888 : color.get(), false);
+                g.fill(0, y - 2, 5 + mc.font.width(text), y + 10, 0xBB15131C);
+                g.drawString(mc.font, text, 3, y, d.stale() ? 0xFF888888 : color.get(), false);
+                widest = Math.max(widest, 5 + mc.font.width(text));
                 y += 14;
             }
+            hud.endVanilla(g);
+            hud.size(widest, y - 2);
         });
     }
     private void tick() {

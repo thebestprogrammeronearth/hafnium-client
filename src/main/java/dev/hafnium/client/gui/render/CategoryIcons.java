@@ -9,10 +9,7 @@ public final class CategoryIcons {
 
     public static Icon of(Category category) {
         return switch (category) {
-            case COMBAT -> Icon.SWORDS;
-            case MOVEMENT -> Icon.RUNNER;
             case RENDER -> Icon.EYE;
-            case PLAYER -> Icon.USER;
             case MISC -> Icon.GRID;
             case WORLD -> Icon.GLOBE;
             case AUTOMATION -> Icon.BOT;

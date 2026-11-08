@@ -74,6 +74,9 @@ public final class CapabilitiesModule extends Module {
         };
     }
 
+    private final dev.hafnium.client.hud.LayoutElement hud =
+            new dev.hafnium.client.hud.LayoutElement("capabilities", "Capabilities", this::isEnabled, 0f, 0f, 4f, 24f);
+
     private void render(HudRenderEvent e) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.options.hideGui || mc.getDebugOverlay().showDebugScreen()) {
@@ -82,13 +85,12 @@ public final class CapabilitiesModule extends Module {
         }
         PermissionService p = HafniumCore.get().permissions();
         Map<Capability, CapabilityStatus> statuses = p.statuses();
-        boolean watermark = HafniumCore.get().modules().get(WatermarkModule.class).isEnabled();
-        int scale = Math.max(1, mc.getWindow().getGuiScale());
         ThemeManager.sync();
-        GuiRenderUtil.begin(e.graphics(), scale, scale);
+        hud.begin(e.graphics());
+        float top = hud.y(e.graphics().guiWidth(), e.graphics().guiHeight());
         try {
-            float x = 4f;
-            float y = watermark ? 24f : 4f;
+            float x = 0f;
+            float y = 0f;
             String head = headline(p);
             int modeColor = p.mode() == OperatingMode.MANUAL ? ThemeManager.TEXT_SECONDARY
                     : p.mode() == OperatingMode.ASSIST ? ASSIST_COLOR : AUTO_COLOR;
@@ -108,7 +110,8 @@ public final class CapabilitiesModule extends Module {
                 GuiRenderUtil.roundRect(x, y, w, 13f, 3f, ThemeManager.withAlpha(ThemeManager.BACKGROUND, 0.8f));
                 GuiRenderUtil.roundRect(x, y, 2f, 13f, 1f, modeColor);
                 GuiRenderUtil.text(FontRole.SMALL, line, x + 7f, y + 6.5f, ThemeManager.TEXT);
-                bottom = y + 13f;
+                hud.size(w, 13f);
+                bottom = top + 13f * hud.scale();
                 return;
             }
             float rowH = 10f;
@@ -118,7 +121,8 @@ public final class CapabilitiesModule extends Module {
             }
             float w = Math.max(GuiRenderUtil.textWidth(FontRole.SMALL, head) + 14f, 10f + nameW + 46f);
             float h = 16f + statuses.size() * rowH + 4f;
-            bottom = y + h;
+            hud.size(w, h);
+            bottom = top + h * hud.scale();
             GuiRenderUtil.roundRect(x, y, w, h, 3f, ThemeManager.withAlpha(ThemeManager.BACKGROUND, 0.8f));
             GuiRenderUtil.roundOutline(x, y, w, h, 3f, ThemeManager.withAlpha(ThemeManager.BORDER, 0.6f));
             GuiRenderUtil.circle(x + 6f, y + 8f, 2f, modeColor);
@@ -132,7 +136,7 @@ public final class CapabilitiesModule extends Module {
                 ry += rowH;
             }
         } finally {
-            GuiRenderUtil.end();
+            hud.end();
         }
     }
 }

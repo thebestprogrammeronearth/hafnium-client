@@ -25,6 +25,8 @@ public final class NavigationModule extends Module {
     private NavigationTask task;
     private PathPlanner.Route preview;
     private String status="Bind preview/start keys in settings. End cancels.";
+    private final dev.hafnium.client.hud.LayoutElement hud = new dev.hafnium.client.hud.LayoutElement(
+            "navigation-debug", "Route Debug", () -> isEnabled() && debug.get(), 0.5f, 0f, 0f, 30f);
     public NavigationModule() { super("Navigation",Category.WORLD,"Bounded walking navigation. Set offsets, then explicitly preview or start."); }
     @Override protected void onEnable(ModuleContext ctx) {
         ctx.subscribe(GameKeyEvent.class,e->{
@@ -47,13 +49,19 @@ public final class NavigationModule extends Module {
         ctx.subscribe(HudRenderEvent.class,e->{
             if(!debug.get() || Minecraft.getInstance().options.hideGui) return;
             var g=e.graphics(); var font=Minecraft.getInstance().font;
-            g.fill(6,30,220,130,0xCC15131C);
-            g.drawString(font,"Navigation: "+(handle==null?status:handle.status()),10,34,0xFFB77CFF,false);
-            var route=task==null?preview:task.route();
-            if(route==null || route.revision()!=HafniumCore.get().navigation().revision()) return;
-            var start=route.points().getFirst();
-            for(var p:route.points()) { int px=110+(p.x()-start.x())*3,pz=85+(p.z()-start.z())*3; g.fill(px,pz,px+2,pz+2,0xFFB77CFF); }
-            g.drawString(font,"Top view • "+route.points().size()+" waypoints",10,116,0xFFF3F0F8,false);
+            hud.beginVanilla(g);
+            try {
+                g.fill(0,0,214,100,0xCC15131C);
+                g.drawString(font,"Navigation: "+(handle==null?status:handle.status()),4,4,0xFFB77CFF,false);
+                var route=task==null?preview:task.route();
+                if(route==null || route.revision()!=HafniumCore.get().navigation().revision()) return;
+                var start=route.points().getFirst();
+                for(var p:route.points()) { int px=104+(p.x()-start.x())*3,pz=55+(p.z()-start.z())*3; if(px>=0&&px<212&&pz>=0&&pz<98) g.fill(px,pz,px+2,pz+2,0xFFB77CFF); }
+                g.drawString(font,"Top view • "+route.points().size()+" waypoints",4,86,0xFFF3F0F8,false);
+            } finally {
+                hud.endVanilla(g);
+                hud.size(214,100);
+            }
         });
         ctx.onClose(()->{ if(handle!=null) handle.cancel("Navigation module disabled"); preview=null; task=null; });
     }

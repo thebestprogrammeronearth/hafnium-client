@@ -121,7 +121,7 @@ section { padding: 88px 0; position: relative; }
 .search input::placeholder { color: var(--muted); }
 .reset { background: none; border: 1px solid var(--border-2); color: var(--text-2); border-radius: 999px; padding: 6px 12px; font: 500 .8rem "Inter", sans-serif; cursor: pointer; }
 .reset:hover { color: var(--text); border-color: var(--accent); }
-.panels { position: relative; min-height: 480px; }
+.panels { position: relative; min-height: 300px; }
 .panel { position: absolute; width: 200px; background: rgba(27, 24, 35, .92); border: 1px solid var(--border-2); border-radius: 9px; overflow: hidden;
   box-shadow: 0 14px 30px -18px rgba(0, 0, 0, .9); transition: box-shadow .15s; }
 .panel.dragging { box-shadow: 0 24px 50px -16px rgba(0, 0, 0, .95), 0 0 0 1px var(--accent); z-index: 20; }

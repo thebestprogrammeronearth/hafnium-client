@@ -34,13 +34,15 @@ public final class KeybindComponent extends SettingComponent implements GuiInput
         float cy = rowCenter();
         float h = hover.eased();
         boolean listening = listening();
-        GuiRenderUtil.text(FontRole.SMALL, setting.name(), x, cy,
-                ThemeManager.lerp(ThemeManager.TEXT_SECONDARY, ThemeManager.TEXT, h));
         String label = listening ? LISTENING : setting.keyName();
         float tw = GuiRenderUtil.textWidth(FontRole.SMALL, label);
         float bw = tw + 10f;
         float bh = 11f;
         float bx = x + w - bw;
+        GuiRenderUtil.pushScissor(x, y, Math.max(0f, bx - x - 3f), ROW);
+        GuiRenderUtil.text(FontRole.SMALL, setting.name(), x, cy,
+                ThemeManager.lerp(ThemeManager.TEXT_SECONDARY, ThemeManager.TEXT, h));
+        GuiRenderUtil.popScissor();
         float by = cy - bh / 2f;
         GuiRenderUtil.roundRect(bx, by, bw, bh, 3f, ThemeManager.lerp(ThemeManager.TRACK, 0xFF3F3750, h));
         if (listening) {

@@ -89,31 +89,31 @@ public final class ClickGuiInputTest implements FabricClientGameTest {
     }
 
     private void moduleRows() {
-        Module flight = module(Category.MOVEMENT, "Flight");
-        clickRow(Category.MOVEMENT, "Flight", 0);
-        checks.check(flight.isEnabled(), "left-click enables module", flight.isEnabled());
-        clickRow(Category.MOVEMENT, "Flight", 0);
-        checks.check(!flight.isEnabled(), "second left-click disables module", flight.isEnabled());
+        Module esp = module(Category.RENDER, "Block ESP");
+        clickRow(Category.RENDER, "Block ESP", 0);
+        checks.check(esp.isEnabled(), "left-click enables module", esp.isEnabled());
+        clickRow(Category.RENDER, "Block ESP", 0);
+        checks.check(!esp.isEnabled(), "second left-click disables module", esp.isEnabled());
 
-        clickRow(Category.MOVEMENT, "Flight", 1);
+        clickRow(Category.RENDER, "Block ESP", 1);
         ctx.waitTicks(8);
-        boolean open = ctx.computeOnClient(mc -> gui(mc).panel(Category.MOVEMENT).find("Flight").isExpanded());
+        boolean open = ctx.computeOnClient(mc -> gui(mc).panel(Category.RENDER).find("Block ESP").isExpanded());
         checks.check(open, "right-click opens settings dropdown", open);
-        checks.check(!flight.isEnabled(), "right-click does not toggle", flight.isEnabled());
+        checks.check(!esp.isEnabled(), "right-click does not toggle", esp.isEnabled());
     }
 
     private void settingsControls() {
-        // Flight: Mode (mode), Speed (slider), Anti Kick (bool), Bind (keybind)
-        clickSetting(Category.MOVEMENT, "Flight", "Mode", 0, 0.5f);
-        checks.check("Creative".equals(value(Category.MOVEMENT, "Flight", "Mode")), "mode left-click cycles forward", value(Category.MOVEMENT, "Flight", "Mode"));
-        clickSetting(Category.MOVEMENT, "Flight", "Mode", 1, 0.5f);
-        checks.check("Vanilla".equals(value(Category.MOVEMENT, "Flight", "Mode")), "mode right-click cycles back", value(Category.MOVEMENT, "Flight", "Mode"));
+        // Block ESP: Shape (mode), Fill Alpha (slider), Glow (bool), Bind (keybind)
+        clickSetting(Category.RENDER, "Block ESP", "Shape", 0, 0.5f);
+        checks.check("Boxes".equals(value(Category.RENDER, "Block ESP", "Shape")), "mode left-click cycles forward", value(Category.RENDER, "Block ESP", "Shape"));
+        clickSetting(Category.RENDER, "Block ESP", "Shape", 1, 0.5f);
+        checks.check("Outline".equals(value(Category.RENDER, "Block ESP", "Shape")), "mode right-click cycles back", value(Category.RENDER, "Block ESP", "Shape"));
 
-        clickSetting(Category.MOVEMENT, "Flight", "Anti Kick", 0, 0.5f);
-        checks.check(Boolean.FALSE.equals(value(Category.MOVEMENT, "Flight", "Anti Kick")), "boolean click toggles", value(Category.MOVEMENT, "Flight", "Anti Kick"));
+        clickSetting(Category.RENDER, "Block ESP", "Glow", 0, 0.5f);
+        checks.check(Boolean.FALSE.equals(value(Category.RENDER, "Block ESP", "Glow")), "boolean click toggles", value(Category.RENDER, "Block ESP", "Glow"));
 
         // Slider: press at the left end, drag to the right end, release.
-        float[] s = settingRect(Category.MOVEMENT, "Flight", "Speed");
+        float[] s = settingRect(Category.RENDER, "Block ESP", "Fill Alpha");
         moveTo(s[0] + 1, s[1] + 18);
         in.holdMouse(0);
         ctx.waitTick();
@@ -121,47 +121,36 @@ public final class ClickGuiInputTest implements FabricClientGameTest {
         ctx.waitTick();
         in.releaseMouse(0);
         ctx.waitTick();
-        checks.check(eq(value(Category.MOVEMENT, "Flight", "Speed"), 5.0), "slider drag past the end clamps to max", value(Category.MOVEMENT, "Flight", "Speed"));
+        checks.check(eq(value(Category.RENDER, "Block ESP", "Fill Alpha"), 1.0), "slider drag past the end clamps to max", value(Category.RENDER, "Block ESP", "Fill Alpha"));
         click(s[0] + s[2] * 0.5f, s[1] + 18, 0);
-        double mid = (Double) value(Category.MOVEMENT, "Flight", "Speed");
-        checks.check(Math.abs(mid - 2.55) <= 0.15, "slider click at middle sets ~midpoint", mid);
+        double mid = (Double) value(Category.RENDER, "Block ESP", "Fill Alpha");
+        checks.check(Math.abs(mid - 0.5) <= 0.06, "slider click at middle sets ~midpoint", mid);
         moveTo(s[0] + s[2] * 0.5f, s[1] + 18);
         in.scroll(1);
         ctx.waitTick();
-        double scrolled = (Double) value(Category.MOVEMENT, "Flight", "Speed");
-        checks.check(Math.abs(scrolled - (mid + 0.1)) < 1e-6, "scroll over slider steps value", scrolled);
+        double scrolled = (Double) value(Category.RENDER, "Block ESP", "Fill Alpha");
+        checks.check(Math.abs(scrolled - (mid + 0.05)) < 1e-6, "scroll over slider steps value", scrolled);
 
         // Keybind: listen, press K; listen, press Escape (clears and must NOT close the GUI).
-        clickSetting(Category.MOVEMENT, "Flight", "Bind", 0, 0.9f);
+        clickSetting(Category.RENDER, "Block ESP", "Bind", 0, 0.9f);
         in.pressKey(GLFW.GLFW_KEY_K);
         ctx.waitTick();
-        KeybindSetting bind = module(Category.MOVEMENT, "Flight").bind();
+        KeybindSetting bind = module(Category.RENDER, "Block ESP").bind();
         checks.check(bind.get() == GLFW.GLFW_KEY_K, "keybind captures pressed key", bind.keyName());
-        clickSetting(Category.MOVEMENT, "Flight", "Bind", 0, 0.9f);
+        clickSetting(Category.RENDER, "Block ESP", "Bind", 0, 0.9f);
         in.pressKey(GLFW.GLFW_KEY_ESCAPE);
         ctx.waitTicks(2);
         checks.check(bind.get() == KeybindSetting.NONE, "Escape while listening clears bind", bind.keyName());
         checks.check(screenIs(ClickGuiScreen.class), "Escape while listening keeps GUI open", screenName());
 
-        // Dropdown on Speed module: open, choose "Vanilla".
-        clickRow(Category.MOVEMENT, "Speed", 1);
+        // Colour picker on World > Ancient Debris Finder
+        clickRow(Category.WORLD, "Ancient Debris Finder", 1);
         ctx.waitTicks(8);
-        clickSetting(Category.MOVEMENT, "Speed", "Mode", 0, 0.5f);
-        ctx.waitTicks(6);
-        float[] d = settingRect(Category.MOVEMENT, "Speed", "Mode");
-        // options start below the 16-unit row + 2 padding, 13 units each: Strafe, OnGround, Vanilla
-        click(d[0] + 20, d[1] + 16 + 2 + 13 * 2 + 6.5f, 0);
-        ctx.waitTicks(6);
-        checks.check("Vanilla".equals(value(Category.MOVEMENT, "Speed", "Mode")), "dropdown option click selects value", value(Category.MOVEMENT, "Speed", "Mode"));
-
-        // Colour picker on Render > ESP
-        clickRow(Category.RENDER, "ESP", 1);
+        clickSetting(Category.WORLD, "Ancient Debris Finder", "Outline color", 0, 0.3f);
         ctx.waitTicks(8);
-        clickSetting(Category.RENDER, "ESP", "Color", 0, 0.3f);
-        ctx.waitTicks(8);
-        float[] c = settingRect(Category.RENDER, "ESP", "Color");
+        float[] c = settingRect(Category.WORLD, "Ancient Debris Finder", "Outline color");
         click(c[0] + c[2] * 0.25f, c[1] + 16 + 1 + 20, 0);
-        ColorSetting color = (ColorSetting) setting(Category.RENDER, "ESP", "Color");
+        ColorSetting color = (ColorSetting) setting(Category.WORLD, "Ancient Debris Finder", "Outline color");
         checks.check(Math.abs(color.saturation() - 0.25f) < 0.04f && Math.abs(color.brightness() - 0.5f) < 0.04f,
                 "colour square click sets saturation/value", color.saturation() + "/" + color.brightness());
         float hueBefore = color.hue();
@@ -209,9 +198,9 @@ public final class ClickGuiInputTest implements FabricClientGameTest {
         click(bar[0] + 60, bar[1] + 12, 0);
         in.typeChars("ESP");
         ctx.waitTicks(6);
-        checks.check(matches(Category.RENDER, "ESP") && matches(Category.RENDER, "StorageESP") && matches(Category.RENDER, "Block ESP"),
+        checks.check(matches(Category.RENDER, "Block ESP"),
                 "uppercase query matches case-insensitively", "render");
-        checks.check(matches(Category.PLAYER, "Respawn") && !matches(Category.RENDER, "Tracers") && !matches(Category.COMBAT, "KillAura"),
+        checks.check(!matches(Category.WORLD, "Navigation") && !matches(Category.CLIENT, "Watermark") && !matches(Category.MISC, "Auto Sell"),
                 "non-matching modules are hidden", "filter");
         ctx.takeScreenshot("hafnium-ingame-search");
 
@@ -227,13 +216,13 @@ public final class ClickGuiInputTest implements FabricClientGameTest {
         // Click empty space (unfocus), then type: type-to-search should refocus the bar.
         float h = ctx.computeOnClient(mc -> gui(mc).layoutHeight());
         click(5, h - 5, 0);
-        in.typeChars("tim");
+        in.typeChars("deb");
         ctx.waitTicks(4);
-        checks.check("tim".equals(searchText()) && matches(Category.PLAYER, "Timer") && !matches(Category.PLAYER, "AutoEat"),
+        checks.check("deb".equals(searchText()) && matches(Category.WORLD, "Ancient Debris Finder") && !matches(Category.WORLD, "Navigation"),
                 "typing anywhere searches", searchText());
 
         click(bar[0] + 172 - 14, bar[1] + 12, 0);
-        checks.check(searchText().isEmpty() && matches(Category.PLAYER, "AutoEat"), "clear button empties search", searchText());
+        checks.check(searchText().isEmpty() && matches(Category.WORLD, "Navigation"), "clear button empties search", searchText());
 
         click(5, h - 5, 0);
         in.holdControl();
@@ -277,10 +266,10 @@ public final class ClickGuiInputTest implements FabricClientGameTest {
 
     private void configs() {
         MockConfigManager manager = MockConfigManager.get();
-        // Enable Sprint so a saved snapshot has something in it.
-        clickRow(Category.MOVEMENT, "Sprint", 0);
-        Module sprint = module(Category.MOVEMENT, "Sprint");
-        checks.check(sprint.isEnabled(), "Sprint enabled before saving", sprint.isEnabled());
+        // Enable Block ESP so a saved snapshot has something in it.
+        clickRow(Category.RENDER, "Block ESP", 0);
+        Module espModule = module(Category.RENDER, "Block ESP");
+        checks.check(espModule.isEnabled(), "Block ESP enabled before saving", espModule.isEnabled());
 
         float[] btn = ctx.computeOnClient(mc -> new float[]{gui(mc).configsX(), gui(mc).configsY(), gui(mc).configsW(), gui(mc).configsH()});
         click(btn[0] + btn[2] / 2, btn[1] + btn[3] / 2, 0);
@@ -312,15 +301,15 @@ public final class ClickGuiInputTest implements FabricClientGameTest {
 
         configButton("Save");
         MockConfig testB = cfg(ConfigScreen::selected);
-        checks.check(Boolean.TRUE.equals(testB.moduleStates().get("movement.sprint")), "Save snapshots enabled modules", testB.moduleStates());
+        checks.check(Boolean.TRUE.equals(testB.moduleStates().get("render.block-esp")), "Save snapshots enabled modules", testB.moduleStates());
 
         clickConfigRow(0); // "default" (empty snapshot)
         configButton("Load");
-        checks.check(!sprint.isEnabled(), "Load restores that config's module states", sprint.isEnabled());
+        checks.check(!espModule.isEnabled(), "Load restores that config's module states", espModule.isEnabled());
         int idx = manager.configs().indexOf(testB);
         clickConfigRow(idx);
         configButton("Load");
-        checks.check(sprint.isEnabled() && manager.active() == testB, "Loading test-b re-enables Sprint", sprint.isEnabled());
+        checks.check(espModule.isEnabled() && manager.active() == testB, "Loading test-b re-enables Block ESP", espModule.isEnabled());
         ctx.takeScreenshot("hafnium-ingame-configs");
 
         configButton("Delete");
@@ -520,7 +509,14 @@ public final class ClickGuiInputTest implements FabricClientGameTest {
     private float[] settingRect(Category c, String module, String setting) {
         return ctx.computeOnClient(mc -> {
             ModuleButton b = gui(mc).panel(c).find(module);
-            int i = indexOf(b.module(), setting);
+            // The panel lists visible settings only (e.g. Block ESP hides "Box Size" in Outline mode).
+            int i = 0;
+            for (var s : b.module().settings()) {
+                if (s.name().equals(setting)) {
+                    break;
+                }
+                i += s.isVisible() ? 1 : 0;
+            }
             SettingComponent sc = b.settingsPanel().components().get(i);
             return new float[]{sc.x(), sc.y(), sc.width()};
         });

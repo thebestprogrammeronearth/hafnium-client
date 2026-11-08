@@ -73,6 +73,9 @@ public final class PerformanceModule extends Module {
         nextStatsUpdate = 0L;
     }
 
+    private final dev.hafnium.client.hud.LayoutElement hud = new dev.hafnium.client.hud.LayoutElement(
+            "performance-stats", "Performance Stats", () -> isEnabled() && showStats.get(), 1f, 1f, -6f, -4f);
+
     private void renderStats(HudRenderEvent e) {
         Minecraft mc = Minecraft.getInstance();
         if (!showStats.get() || mc.options.hideGui) {
@@ -88,16 +91,14 @@ public final class PerformanceModule extends Module {
                     ChunkScanner.pending());
             nextStatsUpdate = now + 250_000_000L;
         }
-        int scale = Math.max(1, mc.getWindow().getGuiScale());
-        GuiRenderUtil.begin(e.graphics(), scale, scale);
+        hud.begin(e.graphics());
         try {
             float w = GuiRenderUtil.textWidth(FontRole.SMALL, statsText);
-            float x = e.graphics().guiWidth() - w - 6f;
-            float y = e.graphics().guiHeight() - 8f;
-            GuiRenderUtil.text(FontRole.SMALL, statsText, x + 0.5f, y + 0.5f, 0xA0000000);
-            GuiRenderUtil.text(FontRole.SMALL, statsText, x, y, ThemeManager.TEXT_SECONDARY);
+            GuiRenderUtil.text(FontRole.SMALL, statsText, 0.5f, 4.5f, 0xA0000000);
+            GuiRenderUtil.text(FontRole.SMALL, statsText, 0f, 4f, ThemeManager.TEXT_SECONDARY);
+            hud.size(w + 1f, 8f);
         } finally {
-            GuiRenderUtil.end();
+            hud.end();
         }
     }
 }

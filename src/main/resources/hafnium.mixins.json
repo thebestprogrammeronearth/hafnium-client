@@ -3,7 +3,24 @@
   "minVersion": "0.8",
   "package": "dev.hafnium.client.mixin",
   "compatibilityLevel": "JAVA_21",
-  "client": ["ClientLevelMixin", "KeyboardHandlerMixin", "anubis.AccessorGameRenderer", "anubis.LevelRendererMixin"],
+  "client": [
+    "ClientLevelMixin",
+    "KeyboardHandlerMixin",
+    "anubis.AccessorBaseSpawner",
+    "anubis.AccessorGameRenderer",
+    "anubis.LevelRendererMixin",
+    "anubis.NoRenderFallingBlockMixin",
+    "anubis.NoRenderLevelRendererMixin",
+    "anubis.NoRenderLavaFogMixin",
+    "anubis.NoRenderScreenEffectMixin",
+    "anubis.NoRenderMobEffectFogMixin",
+    "anubis.NoRenderSpawnerMobMixin",
+    "anubis.NoRenderWeatherMixin",
+    "anubis.NoRenderGuiMixin",
+    "anubis.NoRenderGameRendererMixin",
+    "anubis.NoRenderLightTextureMixin",
+    "anubis.FarmEntityCullMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

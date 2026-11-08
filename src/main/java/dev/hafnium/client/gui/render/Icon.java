@@ -63,7 +63,14 @@ public enum Icon {
     KEYBOARD(s -> s
             .rect(2, 5, 20, 14, 2)
             .line(6, 9, 6, 9).line(10, 9, 10, 9).line(14, 9, 14, 9).line(18, 9, 18, 9)
-            .line(7, 15, 17, 15));
+            .line(7, 15, 17, 15)),
+    /** Solid navigation arrow pointing up (a fan of strokes, since icons are stroke-rasterised). */
+    NAV_ARROW(s -> {
+        for (int i = 0; i <= 12; i++) {
+            s.line(12, 3, 5 + 14 * i / 12f, 20);
+        }
+        return s.line(5, 20, 12, 16).line(12, 16, 19, 20);
+    });
 
     final IconShape shape;
 

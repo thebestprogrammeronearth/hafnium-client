@@ -114,6 +114,7 @@ public final class HafniumClient implements ClientModInitializer {
         EventBus bus = core.events();
         BuiltinModules.registerAll(core.modules());
         new dev.hafnium.client.config.ModuleSettingsStore(core, FabricLoader.getInstance().getConfigDir().resolve("hafnium/module-settings.json")).attach();
+        dev.hafnium.client.hud.HudLayout.load(FabricLoader.getInstance().getConfigDir().resolve("hafnium/hud-layout.json"));
         dev.hafnium.client.render.DebrisOverlay.register(core);
         dev.hafnium.client.anubis.esp.ChunkScanner.init(core.events());
 
@@ -178,7 +179,7 @@ public final class HafniumClient implements ClientModInitializer {
                 mc.execute(() -> handleDisconnect(core, environment));
             }
         });
-        ClientChunkEvents.CHUNK_LOAD.register((level, chunk) -> { core.navigation().invalidate(); observer.onChunkLoad(level, chunk); });
+        ClientChunkEvents.CHUNK_LOAD.register((level, chunk) -> { core.navigation().invalidate(); observer.onChunkLoad(level, chunk); dev.hafnium.client.event.ChunkLoadEvent.dispatch(bus, level, chunk); });
         ClientChunkEvents.CHUNK_UNLOAD.register((level, chunk) -> { core.navigation().invalidate(); observer.onChunkUnload(level, chunk); });
         ClientLifecycleEvents.CLIENT_STOPPING.register(mc -> { core.shutdown(); dev.hafnium.client.config.DeferredJsonFile.flushAll(); });
         HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "hud"), (graphics, delta) -> {

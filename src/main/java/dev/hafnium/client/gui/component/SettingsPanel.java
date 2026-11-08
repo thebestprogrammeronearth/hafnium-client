@@ -64,6 +64,15 @@ public final class SettingsPanel {
         if (s instanceof ColorSetting c) {
             return new ColorComponent(c);
         }
+        if (s instanceof dev.hafnium.client.anubis.setting.StringListSetting l) {
+            return new dev.hafnium.client.gui.setting.StringListComponent(l);
+        }
+        if (s instanceof dev.hafnium.client.core.setting.ActionSetting a) {
+            return new dev.hafnium.client.gui.setting.ButtonComponent(a);
+        }
+        if (s instanceof dev.hafnium.client.core.setting.StringSetting t) {
+            return new dev.hafnium.client.gui.setting.TextComponent(t);
+        }
         if (s instanceof dev.hafnium.client.anubis.setting.BlockColorListSetting b) {
             return new dev.hafnium.client.gui.setting.BlockListComponent(b);
         }

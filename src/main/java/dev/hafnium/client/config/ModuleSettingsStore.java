@@ -47,7 +47,9 @@ public final class ModuleSettingsStore {
         for (var m : core.modules().all()) {
             JsonObject values = new JsonObject();
             for (var s : m.settings()) {
-                if (s instanceof dev.hafnium.client.anubis.setting.Setting doc) {
+                if (s instanceof dev.hafnium.client.core.setting.ActionSetting) {
+                    continue;
+                } else if (s instanceof dev.hafnium.client.anubis.setting.Setting doc) {
                     values.add(s.id(), doc.compact(doc.serialize()));
                 } else if (s instanceof KeybindSetting k) {
                     JsonObject key = new JsonObject();
@@ -76,5 +78,7 @@ public final class ModuleSettingsStore {
             m.set(v.getAsString());
         else if (s instanceof ListSetting l)
             l.set(v.getAsString());
+        else if (s instanceof dev.hafnium.client.core.setting.StringSetting t)
+            t.set(v.getAsString());
     }
 }

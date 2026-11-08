@@ -30,46 +30,40 @@ Status: **Port** = adapt the Anubis implementation · **Replace** = Anubis repla
 **Gated** = port behind the permission model · **Excluded** = server-protection bypass or detection evasion (not
 ported) · **Partial** = essential part depends on excluded code (reported below).
 
-### World & base finding (roadmap priority)
+### World & base finding
 
-| Hafnium roadmap | Anubis module(s) | Status |
+| Hafnium module | Anubis source | Status |
 |---|---|---|
-| Region Map | Region Map (+ `RegionMapRenderer`, `DonutGoliathMapData`, Goliath picker) | Port |
-| Base ESP | Storage ESP, Block ESP, Spawner Notifier, Spawner Nametags, Hole ESP | Port (Storage ESP without its anti-xray leak path) |
-| Base Finder | Sus Chunk Finder, Better Sus Chunk, Chunk Scanner, Light Debug | Port / **Partial**: Sus Chunk Finder's amethyst signal uses `HiddenAmethyst` (anti-xray bypass); Chunk Scanner's advanced mode uses `seedscan` seed prediction (allowed, labelled as prediction) |
-| WorldScanner | Chunk Scanner, Block Notifier, Xray (received blocks only) | Port |
-| Waypoints | Waypoints | Port |
-| Netherite Finder | Netherite Finder | **Excluded**: its only data source is `HiddenDebrisScanner`, which reads debris that anti-xray hid from the chunk palette. Hafnium's Ancient Debris Finder stays. |
-| Elytra Finder | none | Hafnium-only (to build) |
-| Auto Base Hunt | Media Base Finder (DonutSMP goliath lookup), Goliath RTP | Gated |
+| Region Map | Region Map + `RegionMapRenderer`, `DonutGoliaths` | **Done** (drawn with Hafnium's renderer; Goliath picker not ported) |
+| Storage ESP | Storage ESP | **Done** without its anti-xray leak path (chunk-packet and block-entity-packet reads) |
+| Block ESP | Block ESP | **Done** |
+| Spawner Notifier, Spawner Nametags | same | **Done** (labels drawn with Hafnium's renderer) |
+| Base Finder | Sus Chunk Finder ("Classic") | **Done, partial**: "ANBS+ Scan", the amethyst count from server light (`HiddenAmethyst`, `GeodeGlowScan`, `ServerBlockLight`) and "Detect Mined Clusters" read anti-xray-hidden blocks and are not ported |
+| WorldScanner | Chunk Scanner + `seedscan` | **Done** (Advanced Scanner compares visible blocks with the seed's terrain; it never shows predicted ores) |
+| Waypoints | Waypoints | **Done** ("Add Here" bind takes keyboard keys, not mouse buttons) |
+| Netherite Finder | Netherite Finder | **Excluded**: its only data source is `HiddenDebrisScanner` (anti-xray palette leak). Ancient Debris Finder stays. |
+| Elytra Finder | none | **Done**, Hafnium-only |
+| Auto Base Hunt | none suitable (Media Base Finder / Goliath RTP are DonutSMP lookups) | **Done**, Hafnium-only, autonomous task behind the permission layer |
+| (not on Hafnium's list) | Better Sus Chunk, Block Notifier, Hole ESP, Light Debug | Not ported |
 
 ### Utility & HUD
 
-| Hafnium | Anubis | Status |
+| Hafnium module | Anubis source | Status |
 |---|---|---|
-| SpotifyHUD | Spotify HUD (synced lyrics via lrclib, Linux/Windows/macOS backends, media keys) | **Replace** after verification |
-| HUD Editor | HUD (+ `HudEditorScreen`, `HudLayoutStore`, `HudPanel`) | Port |
-| Farm FPS Optimizer | Performance, No Render | Port |
-| Radar, Hotkeys, Discord Presence | same | Port |
-| QoL | Auto Reconnect, Weather Notifier, Chat Macro, Coord Snapper, Name Protect, No Inv Leak, Anti Ghost Block, Skin Change, Slow Swing, Freecam, Freelook, Zoom | Port |
-| InventoryCore | Auto Eat, Legit Auto Tool, Auto Totem, Auto Inventory Totem, Hover Totem, Elytra Swap | Gated (assisted inventory) |
-| Auto Sell, Economy Assistant | Auto Sell (/sell GUI), AH Sell, AH Sniper, Order AH Trader, Order Dropper, Panic Pay, Tp Macro | Gated (autonomous inventory/chat); Hafnium's command-template Auto Sell kept for non-Donut servers |
-| Donut Wheel | none | Hafnium-only |
+| HUD Editor | HUD editor (ImGui) | **Done**, Hafnium's own editor and layout store (Anubis's edits its ImGui HUD, which Hafnium does not have) |
+| Farm FPS Optimizer | No Render (+ Performance) | **Done**: all ten No Render switches, plus Hafnium's farm culling |
+| Schematic Preview | none | **Done**, Hafnium-only (.nbt, .schem, .litematic) |
+| Economy Assistant | none (Anubis's AH/order bots automate trading) | **Done**, Hafnium-only, read-only |
+| InventoryCore | none suitable (Anubis's are combat helpers) | **Done**, Hafnium-only, assisted tasks |
+| SpotifyHUD | Spotify HUD (lyrics, Win/macOS) | Hafnium's kept; lyrics/backends not ported yet |
+| Auto Sell, Donut Wheel | — | Hafnium's own |
 
-### Render & visuals
+### Not ported: generic client modules
 
-ESP, Glow ESP, Tracers, Nametags, Item ESP, Fullbright, Time Changer, Custom FOV, Custom Crosshair, Pearl
-Trajectory, Trajectories, Low Health Warning, Xray, Block Overlay, Color Grading, Custom Glint, Hand Pose,
-Swing Animation, Motion Blur, Atmosphere, Jump Circles, Hit Particles, Particles, Totem Spirit, Target ESP, Hand
-Aura, Floating Relics, 3D Hand, 3D Character, CS Knife → **Port** (client-side rendering).
-
-### Combat & movement
-
-Aim Assist, Kill Aura, Triggerbot, Crystal Aura/Macro/Optimizer, Anchor Aura/Macro, Auto City, Auto Trap, Mace,
-Shield Breaker, Spear Swap, W Tap, Jump Reset, Key Throw, FastXP, Friend Guard, Crystal/Sword PvP Bot, Tpahere
-Kill Bot → **Gated** (`COMBAT_PLAYERS` is authorized-only). Fly, Speed, Spider, Jesus, Boat Fly, Boat Noclip, Click
-TP, Entity Speed/Control, Elytra Fly, Air Stuck, Donut NoFall, No Jump Delay, Trident Boost/Util, Auto Walk/Jump,
-Sneak, Sprint, Knockback Delay, Anti Trap, Auto Relog, Auto Clicker, Fast Use, Spam → **Gated**.
+Hafnium only ships the modules on its own list (the tables above). Anubis's generic client modules are not
+ported: entity ESP/tracers/nametags, fullbright, visual effects, combat (kill aura, aim assist, crystal/anchor
+macros, triggerbot, …), movement (fly, speed, Jesus, spider, step, elytra fly, …) and QoL extras (freecam, zoom,
+auto reconnect, …). Hafnium's own placeholder entries for these were removed as well.
 
 ### Excluded: server-protection bypass or detection evasion
 
@@ -112,3 +106,29 @@ Deviations from Anubis, each verified in-game:
 Verified (AnubisPortGameTest): selected blocks tracked and others ignored, touching blocks merged, broken blocks
 removed, outlines/boxes/tracers visible on screen, selection survives save/load, editor search and click selection,
 budgeted rescan finds newly selected blocks, disabling clears everything.
+
+### 2. Base ESP, base finding, maps, HUD editor (done)
+
+Ported: Storage ESP, Spawner Notifier, Spawner Nametags, No Render (as Farm FPS Optimizer), Sus Chunk Finder (as Base
+Finder), Chunk Scanner + `seedscan` (as WorldScanner), Waypoints, Region Map, `ModuleChat`, `ChallengeToast`,
+`WorldLabel`/`WorldText`, `StringListSetting`, `DonutGoliaths`, the spawner accessor and ten No Render mixins.
+New shared pieces: `event/ChunkLoadEvent` (stands in for Anubis's chunk-packet-applied event), `hud/HudLayout` +
+`LayoutElement` (every overlay is movable), `StringSetting`, `ActionSetting`, list and text editors in the ClickGUI.
+
+Deviations from Anubis:
+- ImGui text (world labels, Region Map, stats) is drawn with Hafnium's renderer: same content, layout and colours
+  (Anubis's ABGR colours converted), different font.
+- `ModuleChat` checks no per-module notification flag itself; ported modules that had "Notifications" gate their
+  own lines.
+- Anubis's settings versioning (`settingsVersion`/`migrateSettings`) is dropped (no old Hafnium configs to migrate).
+- Two decompiler artefacts in `seedscan` were rebuilt from bytecode (`SeedWorldgen.emptyLevel`'s proxy handler, a
+  duplicated variable name in `OreSpec`).
+
+Verified (AnubisPortGameTest, PlannedModulesGameTest): storage types and per-type toggles, block-update add/remove,
+spawner announcement text and nametag labels, farm culling counted per frame, Base Finder flags full bee nests,
+WorldScanner flags a refilled shaft through a diorite blob, Region Map panel and region lookup, Waypoints Add Here and
+on-screen placement, HUD Editor drag with centre snapping, scroll resize and right-click reset; Schematic Preview loads
+all three formats and tracks missing/wrong/correct and rotation; Economy Assistant inventory value (with shulker
+contents), sidebar balance, session profit, chat income/spending and tooltip prices; InventoryCore sort and refill
+(and refusal in Manual mode); Auto Base Hunt refuses in Manual and walks the spiral in Autonomous; Elytra Finder finds
+a ship, its elytra, routes it, sends it to Waypoints and marks it looted when the frame is emptied.

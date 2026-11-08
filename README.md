@@ -27,22 +27,34 @@ Implemented modules:
 
 | Panel | Module | What it does |
 |---|---|---|
-| Client | ClickGUI, Fonts | Appearance of the menu (accent, opacity, blur, fonts). |
-| Client | Watermark | HUD logo. |
-| Client | Capabilities | HUD indicator: what Hafnium may do on the current server and why. On by default. |
-| Client | Server Profile | Per-server rules you confirm yourself (see Permissions). |
-| Client | SpotifyHUD | Now-playing overlay from Spotify's desktop media session. Linux only (MPRIS, needs Python 3 + PyGObject). |
-| World | Observation | Memory limits for the world model. |
-| World | Navigation | Bounded walking: route preview, explicit start, route debug. See [docs/navigation.md](docs/navigation.md). |
-| World | Ancient Debris Finder | Outlines, tracers and waypoints for ancient debris **the server has already sent to your client**. It never predicts or reveals hidden blocks; on servers with anti-xray it finds little. |
 | Render | Block ESP | Highlights the blocks you pick; touching blocks merge into one outline. Boxes, tracers, glow, fade. From Anubis. |
-| Client | Performance | Budgets background scanning and shows FPS / render-time stats. From Anubis. |
+| Render | Storage ESP | Chests, ender chests, shulkers, spawners, furnaces, barrels, enchanting tables, hoppers; per-type colours and tracers. From Anubis (without its anti-xray leak path). |
+| Render | Spawner Nametags | Mob, distance and activation range over each spawner, with the activation ring. From Anubis. |
+| Render | Farm FPS Optimizer | Anubis's No Render switches (fire, totem, pumpkin, nausea, blindness, spawner mob, falling blocks, weather, lava fog, entity fire) plus hiding dropped items, XP orbs and distant mobs. |
+| Render | Schematic Preview | 3D building guide from .nbt, .schem or .litematic files: missing / wrong blocks, progress, materials. |
+| World | Base Finder | Flags chunks where players spent time (overgrown kelp, vines, bamboo, cocoa, bee nests, amethyst). From Anubis's Sus Chunk Finder. |
+| World | WorldScanner | Finds patched mining shafts; with the world seed, terrain that differs from generation. From Anubis's Chunk Scanner. |
+| World | Spawner Notifier | Announces and highlights every spawner in loaded chunks. From Anubis. |
+| World | Waypoints | Saved places on screen with distance, death waypoints, nether/overworld conversion. From Anubis. |
+| World | Elytra Finder | End ships in the End: which still have their elytra, and the shortest round past them. |
+| World | Ancient Debris Finder | Outlines, tracers and waypoints for ancient debris **the server has already sent to your client**. It never predicts or reveals hidden blocks; on servers with anti-xray it finds little. |
+| World | Observation, Navigation | World model memory limits; bounded walking with route preview. See [docs/navigation.md](docs/navigation.md). |
 | Misc | Donut Wheel | Radial menu of your own commands and waypoints. |
 | Misc | Auto Sell | Sells whitelisted items with a sell command you configure per server; manual sales always ask first. |
+| Misc | Economy Assistant | Inventory value from your price list (shulker contents included), balance and session profit from the sidebar, chat income/spending, tooltip prices. |
+| Misc | InventoryCore | Equipment durability panel and alerts; Sort Inventory and Refill Hotbar on keys (assisted, permission-checked). |
+| Automation | Auto Base Hunt | Walks to Base Finder / WorldScanner candidates, then spirals outward. Autonomous: only where automation is authorized. |
 | Automation | Operating Mode | Manual / Assist / Autonomous. |
+| Client | HUD Editor | Drag, resize and reset every overlay; positions survive window and GUI-scale changes. |
+| Client | Region Map | DonutSMP region map with your position and facing. From Anubis. |
+| Client | ClickGUI, Fonts, Watermark | Menu appearance, HUD logo. |
+| Client | Capabilities, Server Profile | What Hafnium may do on this server and why; per-server rules you confirm yourself (see Permissions). |
+| Client | Performance | Budgets background scanning and shows FPS / render-time stats. From Anubis. |
+| Client | SpotifyHUD | Now-playing overlay from Spotify's desktop media session. Linux only (MPRIS, needs Python 3 + PyGObject). |
 
-Setup for the last four is in [docs/priority-modules.md](docs/priority-modules.md). Every other module in the GUI is
-a **placeholder**: it has sample settings but does nothing, and its tooltip says so.
+Setup for Donut Wheel, Auto Sell, SpotifyHUD and Ancient Debris Finder is in [docs/priority-modules.md](docs/priority-modules.md). Only working modules are in
+the GUI; Hafnium doesn't ship generic client modules (fly, speed, kill aura and so on). What's coming is on the
+[roadmap](https://thebestprogrammeronearth.github.io/hafnium-client/#roadmap).
 
 ## Use
 - **Right Shift** opens the ClickGUI (rebindable under Controls → Hafnium Client). **Esc** closes it.
@@ -78,7 +90,7 @@ a **placeholder**: it has sample settings but does nothing, and its tooltip says
 - `HafniumClient`, `world/WorldObserver` + `BlockClassifier`, `net/EnvironmentTracker`, `mixin/` — the Minecraft
   adapter: ticks, join/leave, chunk load/unload (plus periodic reconciliation for chunks the client drops silently),
   server-confirmed block updates, visible entities, HUD render and in-game keys.
-- `modules/` — `BuiltinModules` (registration), `PlaceholderModule`, `client/` (implemented modules).
+- `modules/` — `BuiltinModules` (registration) and the modules, by panel (`render/`, `world/`, `misc/`, `automation/`, `client/`).
 - `gui/` — ClickGUI (unchanged design); reads modules only through `ModuleManager`.
 
 ## Build and test

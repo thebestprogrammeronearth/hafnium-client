@@ -31,26 +31,30 @@ public final class WatermarkModule extends Module {
     private static final net.minecraft.resources.Identifier LOGO =
             net.minecraft.resources.Identifier.fromNamespaceAndPath("hafnium", "textures/gui/logo_small.png");
 
+    private final dev.hafnium.client.hud.LayoutElement hud =
+            new dev.hafnium.client.hud.LayoutElement("watermark", "Watermark", this::isEnabled, 0f, 0f, 2f, 2f);
+
     private void render(HudRenderEvent e) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.options.hideGui || mc.getDebugOverlay().showDebugScreen()) {
             return;
         }
-        int scale = Math.max(1, mc.getWindow().getGuiScale());
         ThemeManager.sync();
-        GuiRenderUtil.begin(e.graphics(), scale, scale);
+        hud.begin(e.graphics());
         try {
-            float x = 2f;
-            float y = 2f;
+            float x = 0f;
+            float y = 0f;
             float s = 20f;
             GuiRenderUtil.image(LOGO, 80, x, y, s, s);
             float tx = x + s + 3f;
             float w = GuiRenderUtil.text(FontRole.TEXT, "Hafnium", tx, y + s / 2f, ThemeManager.TEXT);
+            float right = tx + w;
             if (version.get() && !versionText.isEmpty()) {
-                GuiRenderUtil.text(FontRole.SMALL, versionText, tx + w + 4f, y + s / 2f, ThemeManager.TEXT_SECONDARY);
+                right = tx + w + 4f + GuiRenderUtil.text(FontRole.SMALL, versionText, tx + w + 4f, y + s / 2f, ThemeManager.TEXT_SECONDARY);
             }
+            hud.size(right, s);
         } finally {
-            GuiRenderUtil.end();
+            hud.end();
         }
     }
 }

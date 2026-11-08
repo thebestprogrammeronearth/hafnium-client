@@ -12,7 +12,8 @@
       "dev.hafnium.gametest.NavigationGameTest",
       "dev.hafnium.gametest.DebrisGameTest",
       "dev.hafnium.gametest.UtilityGameTest",
-      "dev.hafnium.gametest.AnubisPortGameTest"
+      "dev.hafnium.gametest.AnubisPortGameTest",
+      "dev.hafnium.gametest.PlannedModulesGameTest"
     ]
   },
   "depends": {

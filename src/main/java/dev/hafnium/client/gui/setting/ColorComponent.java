@@ -71,11 +71,15 @@ public final class ColorComponent extends SettingComponent {
         float cy = rowCenter();
         float h = hover.eased();
         float o = open.smooth();
-        GuiRenderUtil.text(FontRole.SMALL, setting.name(), x, cy,
-                ThemeManager.lerp(ThemeManager.TEXT_SECONDARY, ThemeManager.TEXT, h));
         float sw = 15f;
         float sh = 8f;
         float sx = x + w - sw;
+        // keep the name clear of the swatch and, while open, of the hex code
+        float room = sx - x - 4f - (o > 0.01f ? GuiRenderUtil.textWidth(FontRole.SMALL, setting.hex()) + 6f : 0f);
+        GuiRenderUtil.pushScissor(x, y, Math.max(0f, room), ROW);
+        GuiRenderUtil.text(FontRole.SMALL, setting.name(), x, cy,
+                ThemeManager.lerp(ThemeManager.TEXT_SECONDARY, ThemeManager.TEXT, h));
+        GuiRenderUtil.popScissor();
         GuiRenderUtil.roundRect(sx, cy - sh / 2f, sw, sh, 2.5f, setting.get());
         GuiRenderUtil.roundOutline(sx, cy - sh / 2f, sw, sh, 2.5f, ThemeManager.withAlpha(0xFFFFFFFF, 0.25f + 0.35f * h));
         if (o > 0.01f) {

@@ -34,11 +34,31 @@ public final class SpotifyHudModule extends Module {
     private SpotifySession.Playback playback;
     private String track = "", error = "Waiting for Spotify", artwork = "";
     private float fade;
+    private long lastDrawn;
+    /** HUD Editor entry, backed by this module's own X / Y / Scale settings. */
+    private final dev.hafnium.client.hud.HudElement hud = new dev.hafnium.client.hud.HudElement() {
+        public String id() { return "spotify"; }
+        public String name() { return "SpotifyHUD"; }
+        public boolean visible() { return isEnabled() && System.currentTimeMillis() - lastDrawn < 500; }
+        public float width() { return 240; }
+        public float height() { return compact.get() ? 42 : 70; }
+        public float scale() { return scale.get().floatValue(); }
+        public float x(float sw, float sh) { return Math.min(x.get().floatValue(), Math.max(0, sw - 240 * scale() - 4)); }
+        public float y(float sw, float sh) { return Math.min(y.get().floatValue(), Math.max(0, sh - 70 * scale())); }
+        public void moveTo(float nx, float ny, float sw, float sh) {
+            // a box pushed against the right edge stays right-aligned on any screen (X clamps to the edge)
+            x.set(nx + 240 * scale() >= sw - 6 ? 4000.0 : Math.round(nx));
+            y.set((double) Math.round(ny));
+        }
+        public void setScale(float v) { scale.set(Math.max(.5, Math.min(3, Math.round(v * 10) / 10.0))); }
+        public void reset() { x.reset(); y.reset(); scale.reset(); }
+    };
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("hafnium", "spotify-art");
     private boolean texture;
     public SpotifyHudModule() {
         super("SpotifyHUD", Category.CLIENT,
-                "Spotify via Linux MPRIS. Requires Python 3 + PyGObject. Bind Drag HUD to reposition.");
+                "Spotify via Linux MPRIS. Requires Python 3 + PyGObject. Move it with the HUD Editor or Drag HUD.");
+        dev.hafnium.client.hud.HudLayout.register(hud);
     }
     protected void onEnable(ModuleContext ctx) {
         nextPoll = 0;
@@ -115,6 +135,7 @@ public final class SpotifyHudModule extends Module {
         if (!editing && hide.get() && !available)
             return;
         fade = Math.min(1, fade + .05f);
+        lastDrawn = System.currentTimeMillis();
         float s = scale.get().floatValue();
         float px = Math.min(x.get().floatValue(), Math.max(0, g.guiWidth() - 240 * s - 4)),
               py = Math.min(y.get().floatValue(), Math.max(0, g.guiHeight() - 70 * s));

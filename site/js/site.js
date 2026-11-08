@@ -29,28 +29,36 @@ const svg = (name, cls = "") => `<svg class="${cls}" viewBox="0 0 24 24" fill="n
 // The real module list. live = works in the current release; settings = opens settings instead of toggling.
 const S = (name, info) => ({ name, info, live: true, settings: true });
 const L = (name, info) => ({ name, info, live: true });
-const P = (name) => ({ name, live: false });
 const CATEGORIES = [
-  { id: "combat", title: "COMBAT", icon: "swords", mods: ["AutoTotem", "AutoCrystal", "KillAura", "AimAssist", "Surround", "AntiBot", "Criticals", "HitBox", "ShieldBreaker", "AnchorMacro", "MaceSwap"].map(P) },
-  { id: "movement", title: "MOVEMENT", icon: "runner", mods: ["ElytraFly", "Flight", "Speed", "Strafe", "LongJump", "NoSlow", "Jesus", "Step", "Velocity", "Sprint"].map(P) },
   { id: "render", title: "RENDER", icon: "eye", mods: [
     L("Block ESP", "Pick blocks in a searchable editor; touching blocks merge into one outline. Boxes, tracers, glow, fade. From Anubis."),
-    ...["ESP", "Tracers", "NameTags", "Chams", "StorageESP", "Fullbright", "HUD", "Animations", "Crosshair"].map(P)] },
-  { id: "player", title: "PLAYER", icon: "user", mods: ["AutoEat", "AutoTool", "InventoryMove", "NoFall", "FastPlace", "AntiAFK", "Respawn", "Scaffold", "Timer"].map(P) },
+    L("Storage ESP", "Chests, ender chests, shulkers, spawners, barrels and more, each with its own colour and tracer. From Anubis."),
+    L("Spawner Nametags", "Mob, distance and activation range above every spawner, with the activation ring. From Anubis."),
+    L("Farm FPS Optimizer", "Hides overlays, screen effects and farm clutter (items, XP orbs, distant mobs) to keep FPS up."),
+    L("Schematic Preview", "Building guide from .nbt, .schem or .litematic files: missing and wrong blocks, progress, materials.")] },
   { id: "misc", title: "MISC", icon: "grid", mods: [
     L("Donut Wheel", "Radial menu of your own commands and waypoints. Bind “Open wheel”, click to run, drag to reorder."),
     L("Auto Sell", "Sells whitelisted items with your server's own sell command. Protected gear is never sold automatically."),
-    ...["MiddleClickPearl", "AutoReconnect", "Notifications", "DiscordRPC", "Hitsounds", "PingSpoof", "SafeWalk", "FakePlayer"].map(P)] },
+    L("Economy Assistant", "Inventory value, balance and session profit per hour, chat income and spending, prices in tooltips."),
+    L("InventoryCore", "Equipment durability panel and alerts. Sort Inventory and Refill Hotbar on keys.")] },
   { id: "world", title: "WORLD", icon: "globe", mods: [
-    S("Observation", "Memory limits for the world model: what Hafnium remembers about blocks, chunks and entities."),
+    L("Base Finder", "Flags chunks where players spent time: overgrown kelp, vines, bamboo, cocoa, bee nests. From Anubis."),
+    L("WorldScanner", "Finds patched mining shafts; with the seed, terrain that differs from generation. From Anubis."),
+    L("Spawner Notifier", "Announces and highlights every spawner in loaded chunks. From Anubis."),
+    L("Waypoints", "Saved places on screen with distance, death waypoints, nether coordinates. From Anubis."),
+    L("Elytra Finder", "End ships that still have their elytra, and the shortest round past them."),
     L("Ancient Debris Finder", "Outlines, tracers and waypoints for ancient debris your game already received."),
+    S("Observation", "Memory limits for the world model: what Hafnium remembers about blocks, chunks and entities."),
     L("Navigation", "Walking routes that avoid hazards. Preview first, then start explicitly.")] },
   { id: "automation", title: "AUTOMATION", icon: "bot", mods: [
+    L("Auto Base Hunt", "Walks to Base Finder and WorldScanner candidates, then spirals outward. Only where automation is authorized."),
     S("Operating Mode", "Manual, Assist or Autonomous. Resets to Manual on every join; End stops everything.")] },
   { id: "client", title: "CLIENT", icon: "folder", mods: [
+    S("HUD Editor", "Drag, resize and reset every overlay. Snaps to edges, the centre and other overlays."),
+    L("Region Map", "DonutSMP region map with your position, facing and current region. From Anubis."),
     L("SpotifyHUD", "Track, artist, artwork and progress from Spotify's Linux desktop session."),
-    P("HUD"), S("ClickGUI", "Accent colour, opacity and blur of this menu."), P("Config"), P("Themes"),
-    S("Fonts", "Inter text, pixel-snapped at every GUI scale."), P("Sounds"),
+    S("ClickGUI", "Accent colour, opacity and blur of this menu."),
+    S("Fonts", "Inter text, pixel-snapped at every GUI scale."),
     L("Performance", "Budgets background scanning and shows FPS and render-time stats. From Anubis."),
     L("Watermark", "The Hf/72 logo on your HUD."),
     L("Capabilities", "HUD panel showing what Hafnium may do on this server, and why."),
@@ -58,40 +66,35 @@ const CATEGORIES = [
 ];
 
 const FEATURES = [
-  { icon: "eye", cat: "Render", t: "Block ESP", d: "Pick any blocks in a searchable editor. Touching blocks merge into one clean outline, with boxes, tracers, glow, distance fade and a reveal animation. Ported from Anubis.", wide: true },
-  { icon: "gem", cat: "World", t: "Ancient Debris Finder", d: "3D outlines, tracers, distances and waypoints for debris the server already sent you. Saved per world and dimension; stale spots are marked.", wide: true },
-  { icon: "wheel", cat: "Misc", t: "Donut Wheel", d: "A radial menu for your own commands and waypoints: pages, favorites, argument prompts, confirmations and JSON import/export.", wide: true },
-  { icon: "coins", cat: "Misc", t: "Auto Sell", d: "Uses your server's own sell command. Protects enchanted and named gear, previews every manual sale, and keeps an honest history." },
-  { icon: "music", cat: "Client", t: "SpotifyHUD", d: "Now playing, album art, progress and play/pause, draggable and scalable. No accounts or tokens stored." },
-  { icon: "route", cat: "World", t: "Navigation", d: "Hazard-aware walking routes planned off the main thread, previewed before anything moves." },
-  { icon: "shield", cat: "Client", t: "Capabilities & profiles", d: "See per server what's Auto, Assist or Off. Record a server's rules once and Hafnium respects them.", wide: true },
-  { icon: "grid", cat: "Client", t: "The ClickGUI", d: "Draggable panels, instant search, smooth animations and crisp text at every GUI scale. Try it above.", wide: true },
+  { icon: "eye", cat: "Render", t: "Block & Storage ESP", d: "Pick any blocks in a searchable editor, or let Storage ESP find chests, shulkers and spawners. Touching blocks merge into one clean outline, with boxes, tracers, glow and distance fade. Ported from Anubis.", wide: true },
+  { icon: "globe", cat: "World", t: "Base Finder & WorldScanner", d: "Spot where players have been: chunks with overgrown plants, refilled mining shafts, and (with the seed) terrain that differs from generation. Auto Base Hunt can walk you there.", wide: true },
+  { icon: "route", cat: "World", t: "Elytra Finder", d: "Finds end ships, tells you which still have their elytra, and plans the shortest round past them." },
+  { icon: "grid", cat: "Render", t: "Schematic Preview", d: "Load .nbt, .schem or .litematic files and build along: missing and wrong blocks, progress and a materials list." },
+  { icon: "coins", cat: "Misc", t: "Economy Assistant", d: "Inventory value (shulkers included), balance and profit per hour, chat income and spending, prices in tooltips." },
+  { icon: "shield", cat: "Misc", t: "InventoryCore", d: "Durability panel and alerts before gear breaks, plus one-key inventory sorting and hotbar refills." },
+  { icon: "gem", cat: "World", t: "Ancient Debris Finder", d: "3D outlines, tracers, distances and waypoints for debris the server already sent you. Saved per world and dimension." },
+  { icon: "wheel", cat: "Misc", t: "Donut Wheel & Region Map", d: "A radial menu for your commands and waypoints, and the DonutSMP region map with your position and facing." },
+  { icon: "music", cat: "Client", t: "HUD Editor & SpotifyHUD", d: "Drag and resize every overlay. Now playing with album art and progress, wherever you want it." },
+  { icon: "bot", cat: "Client", t: "Capabilities & profiles", d: "See per server what's Auto, Assist or Off. Record a server's rules once and Hafnium respects them." },
 ];
 
 const SHIPPED = [
   ["ClickGUI & module framework", "Panels, search, settings, keybinds, configs UI"],
-  ["Ancient Debris Finder", "Observed debris with outlines, tracers and waypoints"],
-  ["Donut Wheel", "Radial command and waypoint menu"],
-  ["Auto Sell", "Configurable inventory selling"],
-  ["SpotifyHUD", "Live music info and album artwork (Linux)"],
-  ["Navigation", "Hazard-aware walking routes"],
+  ["Block ESP, Storage ESP, Spawner Notifier & Nametags", "Base ESP from Anubis"],
+  ["Base Finder & WorldScanner", "Signs of players in received chunks (from Anubis)"],
+  ["Region Map & Waypoints", "From Anubis"],
+  ["Elytra Finder", "End ships with elytra and a shortest-round plan"],
+  ["Auto Base Hunt", "Walks to candidates where automation is authorized"],
+  ["Schematic Preview", ".nbt, .schem and .litematic building guides"],
+  ["Economy Assistant & InventoryCore", "Value, profit, durability, sorting"],
+  ["Farm FPS Optimizer & Performance", "No Render switches, farm culling, budgeted scanning"],
+  ["HUD Editor", "Move and resize every overlay"],
+  ["Ancient Debris Finder, Donut Wheel, Auto Sell, SpotifyHUD, Navigation", "The first modules"],
   ["Safety model", "Capabilities HUD, server profiles, operating modes, emergency stop"],
-  ["Block ESP", "Merged outlines, boxes and tracers for blocks you choose (from Anubis)"],
-  ["Performance", "Budgeted background scanning and live stats (from Anubis)"],
 ];
 const PLANNED = [
-  ["Base Finder", "Sus Chunk Finder and Chunk Scanner: signs of players in received chunks (from Anubis)"],
-  ["Storage ESP & Spawner Notifier", "Chests, shulkers and spawners in loaded chunks (from Anubis)"],
-  ["Region Map & Waypoints", "Region map and world waypoints (from Anubis)"],
-  ["Netherite Finder", "Netherite resource discovery and visualization"],
-  ["Elytra Finder", "Locate observed End structures and plan elytra runs"],
-  ["WorldScanner", "Analyze terrain and observed block patterns"],
-  ["Auto Base Hunt", "Exploration of candidate locations, only where automation is authorized"],
-  ["Economy Assistant", "Prices, inventory value and profit tracking"],
-  ["InventoryCore", "Inventory and equipment management"],
-  ["Farm FPS Optimizer", "Better performance around large farms"],
-  ["Schematic Preview", "3D building guides"],
-  ["HUD Editor", "Move and resize every overlay"],
+  ["Block editor", "Full colour picker, separate tracer colours and Add all shown, as in Anubis"],
+  ["SpotifyHUD lyrics", "Synced lyrics and Windows / macOS players (from Anubis)"],
 ];
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -115,9 +118,7 @@ function demo() {
     toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2200);
   };
   const enabled = new Set(store.get("hf-demo-on", ["Watermark", "Capabilities"]));
-  // Phones: start with only the panels that have working modules open, so the page stays short.
-  const defaultFolded = matchMedia("(max-width: 720px)").matches ? ["combat", "movement", "render", "player"] : [];
-  const folded = new Set(store.get("hf-demo-folded", defaultFolded));
+  const folded = new Set(store.get("hf-demo-folded", []));
   let offsets = store.get("hf-demo-offsets", {});
   const mobile = () => matchMedia("(max-width: 720px)").matches;
 
@@ -178,7 +179,7 @@ function demo() {
       heights[col] += p.offsetHeight + GAP;
       maxH = Math.max(maxH, y + p.offsetHeight);
     });
-    root.style.height = Math.max(440, maxH + 8) + "px";
+    root.style.height = Math.max(300, maxH + 8) + "px";
   }
 
   // Drag headers on desktop; click (without moving) folds.

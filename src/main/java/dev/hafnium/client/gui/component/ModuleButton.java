@@ -144,13 +144,15 @@ public final class ModuleButton {
 
         float cy = y + ROW_H / 2f;
         int textColor = ThemeManager.lerp(ThemeManager.lerp(0xFFE4E0EA, ThemeManager.TEXT, hv), ThemeManager.accentHover(), 0.55f * on);
+        // Long names (e.g. "Ancient Debris Finder") step down to the small font so they clear the status dot.
+        FontRole role = GuiRenderUtil.textWidth(FontRole.TEXT, module.name()) > w - TEXT_X - DOT_INSET - 6f ? FontRole.SMALL : FontRole.TEXT;
         if (mid.isEmpty()) {
-            GuiRenderUtil.text(FontRole.TEXT, module.name(), x + TEXT_X, cy, textColor);
+            GuiRenderUtil.text(role, module.name(), x + TEXT_X, cy, textColor);
         } else {
             float tx = x + TEXT_X;
-            tx += GuiRenderUtil.text(FontRole.TEXT, pre, tx, cy, textColor);
-            tx += GuiRenderUtil.text(FontRole.TEXT, mid, tx, cy, ThemeManager.accent());
-            GuiRenderUtil.text(FontRole.TEXT, post, tx, cy, textColor);
+            tx += GuiRenderUtil.text(role, pre, tx, cy, textColor);
+            tx += GuiRenderUtil.text(role, mid, tx, cy, ThemeManager.accent());
+            GuiRenderUtil.text(role, post, tx, cy, textColor);
         }
 
         float dx = x + w - DOT_INSET;

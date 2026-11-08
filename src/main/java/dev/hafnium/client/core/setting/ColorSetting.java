@@ -14,6 +14,11 @@ public final class ColorSetting extends Setting<Integer> {
         return get();
     }
 
+    /** This colour with its alpha replaced (0-255). */
+    public int argbWithAlpha(int alpha) {
+        return Math.max(0, Math.min(255, alpha)) << 24 | get() & 0xFFFFFF;
+    }
+
     public ColorSetting(String name, int argb) {
         super(name, 0xFF000000 | argb);
         setArgb(argb);

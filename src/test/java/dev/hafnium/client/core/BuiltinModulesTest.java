@@ -25,16 +25,20 @@ class BuiltinModulesTest {
         for (Module m : manager.all()) {
             assertTrue(ids.add(m.id()), "duplicate id " + m.id());
         }
-        assertNotNull(manager.find("render.hud"));
-        assertNotNull(manager.find("client.hud"));
         assertEquals(Implementation.IMPLEMENTED, manager.get(ClickGuiModule.class).implementation());
         assertEquals(Implementation.IMPLEMENTED, manager.get(FontsModule.class).implementation());
         assertEquals(Implementation.IMPLEMENTED, manager.get(WatermarkModule.class).implementation());
-        long implemented = manager.all().stream().filter(m -> m.implementation() == Implementation.IMPLEMENTED).count();
-        assertEquals(14, implemented,
-                "only ClickGUI, Fonts, Watermark, Capabilities, Server Profile, Performance, SpotifyHUD, Donut Wheel, Auto Sell, Observation, Ancient Debris Finder, Navigation, Block ESP and Operating Mode are implemented");
-        assertNotNull(manager.find("render.block-esp"), "Block ESP replaced the BlockESP placeholder");
-        assertEquals(3, manager.byCategory(Category.WORLD).size());
-        assertEquals(1, manager.byCategory(Category.AUTOMATION).size());
+        for (Module m : manager.all()) {
+            assertEquals(Implementation.IMPLEMENTED, m.implementation(), m.name() + " is a placeholder");
+        }
+        Set<String> names = new java.util.TreeSet<>();
+        manager.all().forEach(m -> names.add(m.name()));
+        assertEquals(new java.util.TreeSet<>(Set.of(
+                "ClickGUI", "Fonts", "Watermark", "Capabilities", "Server Profile", "Performance", "SpotifyHUD",
+                "Donut Wheel", "Auto Sell", "Observation", "Ancient Debris Finder", "Navigation", "Operating Mode",
+                "Block ESP", "Storage ESP", "Spawner Nametags", "Spawner Notifier", "Farm FPS Optimizer", "Base Finder", "WorldScanner", "Waypoints", "Region Map", "HUD Editor", "Elytra Finder", "Schematic Preview", "Economy Assistant", "InventoryCore", "Auto Base Hunt")), names);
+        assertNotNull(manager.find("render.block-esp"));
+        assertEquals(8, manager.byCategory(Category.WORLD).size());
+        assertEquals(2, manager.byCategory(Category.AUTOMATION).size());
     }
 }
