@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#15131C">
   <meta property="og:title" content="Hafnium Client">
   <meta property="og:description" content="Free, open-source Fabric client for Minecraft Java 1.21.11.">
-  <meta property="og:image" content="https://thebestprogrammeronearth.github.io/hafnium-client/img/og.png">
+  <meta property="og:image" content="https://thebestprogrammeronearth.github.io/hafnium-client/img/og.jpg">
   <meta property="og:type" content="website">
   <link rel="icon" href="img/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="img/logo.png">
@@ -21,6 +21,7 @@
     <a class="brand" href="#top" aria-label="Hafnium home"><img class="logo" src="img/logo.png" width="40" height="40" alt=""><span>Hafnium</span></a>
     <nav class="nav" id="nav">
       <a href="#demo">Try it</a>
+      <a href="#gallery">Screenshots</a>
       <a href="#features">Features</a>
       <a href="#safety">Safety</a>
       <a href="#roadmap">Roadmap</a>
@@ -80,6 +81,23 @@
         <div class="toast" id="toast" role="status" aria-live="polite"></div>
       </div>
       <p class="hint">Tip: in the game, press <kbd>Right Shift</kbd> to open it and <kbd>End</kbd> for the emergency stop.</p>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">In game</span>
+        <h2>Straight from the game</h2>
+        <p>Unedited screenshots from Hafnium's automated in-game tests.</p>
+      </div>
+      <div class="gallery">
+        <figure class="shot-card big"><img src="img/esp-outline.jpg" loading="lazy" alt="Block ESP: three touching gold blocks merged into one purple outline"><figcaption><strong>Block ESP</strong> merges touching blocks into one clean outline.</figcaption></figure>
+        <figure class="shot-card"><img src="img/block-editor.jpg" loading="lazy" alt="The block editor over the ClickGUI, searching for diamond block"><figcaption><strong>Block editor</strong>: search every block, pick colours and tracers.</figcaption></figure>
+        <figure class="shot-card"><img src="img/esp-boxes.jpg" loading="lazy" alt="Block ESP in box mode with a tracer"><figcaption><strong>Boxes &amp; tracers</strong> when you want them.</figcaption></figure>
+        <figure class="shot-card"><img src="img/clickgui.jpg" loading="lazy" alt="The Hafnium ClickGUI with category panels"><figcaption><strong>The ClickGUI</strong>, the same one you can try above.</figcaption></figure>
+        <figure class="shot-card"><img src="img/capabilities.jpg" loading="lazy" alt="Capabilities HUD on a multiplayer server"><figcaption><strong>Capabilities HUD</strong>: what's on, per server.</figcaption></figure>
+      </div>
     </div>
   </section>
 
@@ -200,6 +218,12 @@ cd hafnium-client
         <p>Not yet: it reads Spotify's Linux desktop media session (MPRIS). Other systems show "no backend".</p>
       </details>
       <details>
+        <summary>Where do some modules come from?</summary>
+        <p>Block ESP and Performance (and more on the way) are ported from <a href="https://github.com/4ldenz/Anubis-client">Anubis</a>
+          by 4ldenz, another GPL-3.0 client, onto Hafnium's own ClickGUI and module system. Anubis features that bypass
+          server protections such as anti-xray are not included.</p>
+      </details>
+      <details>
         <summary>How can I help?</summary>
         <p>Report bugs and send pull requests on <a data-link="source" href="https://github.com/thebestprogrammeronearth/hafnium-client">GitHub</a>.
           Please run the tests first.</p>
@@ -232,7 +256,9 @@ cd hafnium-client
       <a data-link="issues" href="https://github.com/thebestprogrammeronearth/hafnium-client/issues">Report a bug</a>
       <a data-link="license" href="https://github.com/thebestprogrammeronearth/hafnium-client/blob/main/LICENSE">License</a>
     </nav>
+    <p class="credit">Block ESP, Performance and more ported from <a href="https://github.com/4ldenz/Anubis-client">Anubis</a> by 4ldenz (GPL-3.0).</p>
   </div>
 </footer>
+<div class="lightbox" id="lightbox" hidden><img alt=""><button type="button" aria-label="Close">×</button></div>
 </body>
 </html>

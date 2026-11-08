@@ -33,7 +33,9 @@ const P = (name) => ({ name, live: false });
 const CATEGORIES = [
   { id: "combat", title: "COMBAT", icon: "swords", mods: ["AutoTotem", "AutoCrystal", "KillAura", "AimAssist", "Surround", "AntiBot", "Criticals", "HitBox", "ShieldBreaker", "AnchorMacro", "MaceSwap"].map(P) },
   { id: "movement", title: "MOVEMENT", icon: "runner", mods: ["ElytraFly", "Flight", "Speed", "Strafe", "LongJump", "NoSlow", "Jesus", "Step", "Velocity", "Sprint"].map(P) },
-  { id: "render", title: "RENDER", icon: "eye", mods: ["ESP", "Tracers", "NameTags", "Chams", "StorageESP", "BlockESP", "Fullbright", "HUD", "Animations", "Crosshair"].map(P) },
+  { id: "render", title: "RENDER", icon: "eye", mods: [
+    L("Block ESP", "Pick blocks in a searchable editor; touching blocks merge into one outline. Boxes, tracers, glow, fade. From Anubis."),
+    ...["ESP", "Tracers", "NameTags", "Chams", "StorageESP", "Fullbright", "HUD", "Animations", "Crosshair"].map(P)] },
   { id: "player", title: "PLAYER", icon: "user", mods: ["AutoEat", "AutoTool", "InventoryMove", "NoFall", "FastPlace", "AntiAFK", "Respawn", "Scaffold", "Timer"].map(P) },
   { id: "misc", title: "MISC", icon: "grid", mods: [
     L("Donut Wheel", "Radial menu of your own commands and waypoints. Bind “Open wheel”, click to run, drag to reorder."),
@@ -49,12 +51,14 @@ const CATEGORIES = [
     L("SpotifyHUD", "Track, artist, artwork and progress from Spotify's Linux desktop session."),
     P("HUD"), S("ClickGUI", "Accent colour, opacity and blur of this menu."), P("Config"), P("Themes"),
     S("Fonts", "Inter text, pixel-snapped at every GUI scale."), P("Sounds"),
+    L("Performance", "Budgets background scanning and shows FPS and render-time stats. From Anubis."),
     L("Watermark", "The Hf/72 logo on your HUD."),
     L("Capabilities", "HUD panel showing what Hafnium may do on this server, and why."),
     S("Server Profile", "Record each server's rules once; prohibited actions stay off there.")] },
 ];
 
 const FEATURES = [
+  { icon: "eye", cat: "Render", t: "Block ESP", d: "Pick any blocks in a searchable editor. Touching blocks merge into one clean outline, with boxes, tracers, glow, distance fade and a reveal animation. Ported from Anubis.", wide: true },
   { icon: "gem", cat: "World", t: "Ancient Debris Finder", d: "3D outlines, tracers, distances and waypoints for debris the server already sent you. Saved per world and dimension; stale spots are marked.", wide: true },
   { icon: "wheel", cat: "Misc", t: "Donut Wheel", d: "A radial menu for your own commands and waypoints: pages, favorites, argument prompts, confirmations and JSON import/export.", wide: true },
   { icon: "coins", cat: "Misc", t: "Auto Sell", d: "Uses your server's own sell command. Protects enchanted and named gear, previews every manual sale, and keeps an honest history." },
@@ -72,11 +76,13 @@ const SHIPPED = [
   ["SpotifyHUD", "Live music info and album artwork (Linux)"],
   ["Navigation", "Hazard-aware walking routes"],
   ["Safety model", "Capabilities HUD, server profiles, operating modes, emergency stop"],
+  ["Block ESP", "Merged outlines, boxes and tracers for blocks you choose (from Anubis)"],
+  ["Performance", "Budgeted background scanning and live stats (from Anubis)"],
 ];
 const PLANNED = [
-  ["Base Finder", "Analyze observed structures and flag likely player bases"],
-  ["Base ESP", "Highlight observed storage and redstone"],
-  ["Region Map", "Explored chunks and regions on a colour-coded map"],
+  ["Base Finder", "Sus Chunk Finder and Chunk Scanner: signs of players in received chunks (from Anubis)"],
+  ["Storage ESP & Spawner Notifier", "Chests, shulkers and spawners in loaded chunks (from Anubis)"],
+  ["Region Map & Waypoints", "Region map and world waypoints (from Anubis)"],
   ["Netherite Finder", "Netherite resource discovery and visualization"],
   ["Elytra Finder", "Locate observed End structures and plan elytra runs"],
   ["WorldScanner", "Analyze terrain and observed block patterns"],
@@ -303,14 +309,28 @@ function chrome() {
     } catch (e) { b.textContent = "Select & copy"; }
     setTimeout(() => b.textContent = "Copy", 1600);
   }));
-  $$(".section-head, .tier, .lane, .steps li, details").forEach(el => el.classList.add("reveal"));
+  $$(".section-head, .tier, .lane, .steps li, details, .shot-card").forEach(el => el.classList.add("reveal"));
   if ("IntersectionObserver" in window && !location.search.includes("noanim")) {
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
     $$(".reveal").forEach(el => io.observe(el));
   } else $$(".reveal").forEach(el => el.classList.add("in"));
 }
 
+function lightbox() {
+  const box = $("#lightbox"), img = $("img", box);
+  $$(".shot-card").forEach(card => card.addEventListener("click", () => {
+    const src = $("img", card);
+    img.src = src.src;
+    img.alt = src.alt;
+    box.hidden = false;
+  }));
+  const close = () => { box.hidden = true; img.src = ""; };
+  box.addEventListener("click", close);
+  addEventListener("keydown", e => { if (e.key === "Escape" && !box.hidden) close(); });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  lightbox();
   features();
   chrome();
   demo();
