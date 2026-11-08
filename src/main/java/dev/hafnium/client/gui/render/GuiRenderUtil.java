@@ -46,6 +46,13 @@ public final class GuiRenderUtil {
         g.pose().scale(1f / guiScale, 1f / guiScale);
     }
 
+    /** Draws a whole texture (e.g. the logo) at layout units, smoothly scaled. */
+    public static void image(net.minecraft.resources.Identifier texture, int texSize, float x, float y, float w, float h) {
+        g.blit(net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED, texture, px(x), px(y), 0, 0,
+                px(x + w) - px(x), px(y + h) - px(y), texSize, texSize, texSize, texSize,
+                ThemeManager.withAlpha(0xFFFFFFFF, alpha()));
+    }
+
     public static void end() {
         g.pose().popMatrix();
         g = null;

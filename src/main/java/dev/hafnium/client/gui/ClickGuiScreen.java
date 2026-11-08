@@ -320,15 +320,17 @@ public final class ClickGuiScreen extends Screen {
         GuiRenderUtil.end();
     }
 
+    private static final net.minecraft.resources.Identifier LOGO =
+            net.minecraft.resources.Identifier.fromNamespaceAndPath("hafnium", "textures/gui/logo.png");
+
     private void renderTopBar() {
         // Periodic-table logo tile
         float lx = logoX();
         float ly = 13.5f;
         float ls = 35f;
-        GuiRenderUtil.roundRect(lx, ly, ls, ls, 5f, ThemeManager.withAlpha(ThemeManager.HEADER, 0.82f));
-        GuiRenderUtil.roundOutline(lx, ly, ls, ls, 5f, ThemeManager.accent());
-        GuiRenderUtil.text(FontRole.TINY, "72", lx + 5.5f, ly + 8f, ThemeManager.TEXT);
-        GuiRenderUtil.text(FontRole.LOGO, "Hf", lx + 7.5f, ly + 22.5f, ThemeManager.TEXT);
+        // The logo image includes its orbit and glow; its tile covers ~62% of the image width.
+        float img = ls / 0.62f;
+        GuiRenderUtil.image(LOGO, 160, lx + ls / 2f - img / 2f, ly + ls / 2f - img / 2f, img, img);
 
         // Divider and wordmark
         GuiRenderUtil.rect(lx + 53f, BAR_CY - 9.5f, 1f, 19f, ThemeManager.withAlpha(ThemeManager.TEXT, 0.55f));

@@ -28,6 +28,9 @@ public final class WatermarkModule extends Module {
         ctx.subscribe(HudRenderEvent.class, this::render);
     }
 
+    private static final net.minecraft.resources.Identifier LOGO =
+            net.minecraft.resources.Identifier.fromNamespaceAndPath("hafnium", "textures/gui/logo_small.png");
+
     private void render(HudRenderEvent e) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.options.hideGui || mc.getDebugOverlay().showDebugScreen()) {
@@ -37,13 +40,11 @@ public final class WatermarkModule extends Module {
         ThemeManager.sync();
         GuiRenderUtil.begin(e.graphics(), scale, scale);
         try {
-            float x = 4f;
-            float y = 4f;
-            float s = 16f;
-            GuiRenderUtil.roundRect(x, y, s, s, 3f, ThemeManager.withAlpha(ThemeManager.HEADER, 0.85f));
-            GuiRenderUtil.roundOutline(x, y, s, s, 3f, ThemeManager.accent());
-            GuiRenderUtil.textCentered(FontRole.SMALL, "Hf", x + s / 2f, y + s / 2f + 0.5f, ThemeManager.TEXT);
-            float tx = x + s + 5f;
+            float x = 2f;
+            float y = 2f;
+            float s = 20f;
+            GuiRenderUtil.image(LOGO, 80, x, y, s, s);
+            float tx = x + s + 3f;
             float w = GuiRenderUtil.text(FontRole.TEXT, "Hafnium", tx, y + s / 2f, ThemeManager.TEXT);
             if (version.get() && !versionText.isEmpty()) {
                 GuiRenderUtil.text(FontRole.SMALL, versionText, tx + w + 4f, y + s / 2f, ThemeManager.TEXT_SECONDARY);
