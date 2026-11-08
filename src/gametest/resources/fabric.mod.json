@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "hafnium-gametest",
+  "version": "1.0.0",
+  "name": "Hafnium Client gametests",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-client-gametest": [
+      "dev.hafnium.gametest.ClickGuiInputTest",
+      "dev.hafnium.gametest.Stage2GameTest",
+      "dev.hafnium.gametest.PermissionGameTest",
+      "dev.hafnium.gametest.NavigationGameTest",
+      "dev.hafnium.gametest.DebrisGameTest",
+      "dev.hafnium.gametest.UtilityGameTest"
+    ]
+  },
+  "depends": {
+    "hafnium": "*",
+    "fabric-api": "*"
+  }
+}
