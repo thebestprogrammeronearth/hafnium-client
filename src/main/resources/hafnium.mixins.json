@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "dev.hafnium.client.mixin",
   "compatibilityLevel": "JAVA_21",
-  "client": ["ClientLevelMixin", "KeyboardHandlerMixin"],
+  "client": ["ClientLevelMixin", "KeyboardHandlerMixin", "anubis.AccessorGameRenderer", "anubis.LevelRendererMixin"],
   "injectors": {
     "defaultRequire": 1
   }

@@ -123,8 +123,7 @@ public final class BuiltinModules {
                 .with(new ColorSetting("Hidden", 0xFF4A2B80)));
         add(p("StorageESP", Category.RENDER, "Placeholder: container outlines.")
                 .with(new ColorSetting("Chests", 0xFFFFB84D)));
-        add(p("BlockESP", Category.RENDER, "Placeholder: block outlines.")
-                .with(new ListSetting("Block", "Diamond Ore", "Diamond Ore", "Ancient Debris", "Spawner")));
+        manager.register(new dev.hafnium.client.modules.render.BlockEspModule());
         add(p("Fullbright", Category.RENDER, "Placeholder: brightness.")
                 .with(new ModeSetting("Mode", "Gamma", "Gamma", "Potion")));
         add(p("HUD", Category.RENDER, "Placeholder: HUD elements.")
@@ -200,6 +199,7 @@ public final class BuiltinModules {
                 .with(new NumberSetting("Volume", 50, 0, 100, 1, "%")));
         manager.register(new WatermarkModule());
         manager.register(new CapabilitiesModule());
+        manager.register(new dev.hafnium.client.modules.client.PerformanceModule());
         manager.register(new ServerProfileModule());
     }
 }

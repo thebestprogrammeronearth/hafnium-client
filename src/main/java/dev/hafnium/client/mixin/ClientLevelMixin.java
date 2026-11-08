@@ -15,6 +15,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(ClientLevel.class)
 public abstract class ClientLevelMixin {
+    /** Every block change in the client level, with old and new state (ported from Anubis's MixinClientLevel). */
+    @Inject(method = "sendBlockUpdated", at = @At("HEAD"))
+    private void hafnium$onBlockUpdated(BlockPos pos, BlockState oldState, BlockState newState, int flags, CallbackInfo ci) {
+        dev.hafnium.client.event.BlockUpdateEvent.dispatch(dev.hafnium.client.core.HafniumCore.get().events(), pos, oldState, newState);
+    }
+
     @Inject(method = "setServerVerifiedBlockState", at = @At("HEAD"))
     private void hafnium$onServerBlock(BlockPos pos, BlockState state, int flags, CallbackInfo ci) {
         HafniumClient.onServerBlockUpdate((ClientLevel) (Object) this, pos, state);

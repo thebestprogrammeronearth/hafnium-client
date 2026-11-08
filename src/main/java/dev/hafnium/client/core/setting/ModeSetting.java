@@ -14,6 +14,10 @@ public final class ModeSetting extends Setting<String> {
         }
     }
 
+    public boolean is(String mode) {
+        return get().equals(mode);
+    }
+
     public List<String> modes() {
         return modes;
     }

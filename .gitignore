@@ -8,3 +8,4 @@ out/
 # local runs
 logs/
 *.log
+reference/

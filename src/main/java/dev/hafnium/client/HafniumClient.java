@@ -115,6 +115,7 @@ public final class HafniumClient implements ClientModInitializer {
         BuiltinModules.registerAll(core.modules());
         new dev.hafnium.client.config.ModuleSettingsStore(core, FabricLoader.getInstance().getConfigDir().resolve("hafnium/module-settings.json")).attach();
         dev.hafnium.client.render.DebrisOverlay.register(core);
+        dev.hafnium.client.anubis.esp.ChunkScanner.init(core.events());
 
         ObservationModule observation = core.modules().get(ObservationModule.class);
         core.world().setLimits(observation.limits());
@@ -139,7 +140,10 @@ public final class HafniumClient implements ClientModInitializer {
         emergencyStopKey = KeyBindingHelper.registerKeyBinding(
                 new KeyMapping("key.hafnium.emergency_stop", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_END, category));
 
-        ClientTickEvents.START_CLIENT_TICK.register(mc -> bus.post(ClientTickEvent.START));
+        ClientTickEvents.START_CLIENT_TICK.register(mc -> {
+            dev.hafnium.client.anubis.util.PerformanceBudget.beginTick(); // refill the per-tick scan budget
+            bus.post(ClientTickEvent.START);
+        });
         ClientTickEvents.END_CLIENT_TICK.register(mc -> {
             while (emergencyStopKey.consumeClick()) {
                 core.control().emergencyStop("Emergency stop key");

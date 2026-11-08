@@ -15,6 +15,14 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+    // Dear ImGui (MIT) for HUD overlays ported from Anubis; bundled inside the mod jar.
+    def imgui = "1.90.0"
+    include(implementation("io.github.spair:imgui-java-binding:$imgui"))
+    include(implementation("io.github.spair:imgui-java-lwjgl3:$imgui") { transitive = false })
+    ["linux", "windows", "macos"].each { os ->
+        include(runtimeOnly("io.github.spair:imgui-java-natives-$os:$imgui"))
+    }
+
     testImplementation "org.junit.jupiter:junit-jupiter:5.11.4"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }

@@ -30,6 +30,14 @@ public final class NumberSetting extends Setting<Double> {
         this(name, defaultValue, min, max, step, "");
     }
 
+    public float getFloat() {
+        return get().floatValue();
+    }
+
+    public int getInt() {
+        return (int) Math.round(get());
+    }
+
     public double min() {
         return min;
     }

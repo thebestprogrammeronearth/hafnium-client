@@ -19,6 +19,10 @@ public final class ModuleSettingsStore {
             String text = file.read();
             JsonObject root = text == null ? new JsonObject() : JsonParser.parseString(text).getAsJsonObject();
             for (var m : core.modules().all())
+                for (var s : m.settings())
+                    if (s instanceof dev.hafnium.client.anubis.setting.Setting doc)
+                        doc.captureDefault();
+            for (var m : core.modules().all())
                 if (root.has(m.id())) {
                     var values = root.getAsJsonObject(m.id());
                     for (var s : m.settings())
@@ -43,7 +47,9 @@ public final class ModuleSettingsStore {
         for (var m : core.modules().all()) {
             JsonObject values = new JsonObject();
             for (var s : m.settings()) {
-                if (s instanceof KeybindSetting k) {
+                if (s instanceof dev.hafnium.client.anubis.setting.Setting doc) {
+                    values.add(s.id(), doc.compact(doc.serialize()));
+                } else if (s instanceof KeybindSetting k) {
                     JsonObject key = new JsonObject();
                     key.addProperty("code", k.get());
                     key.addProperty("name", k.keyName());
@@ -56,7 +62,9 @@ public final class ModuleSettingsStore {
         file.changed(root.toString(), core.scheduler().currentTick());
     }
     private static void read(Setting<?> s, JsonElement v) {
-        if (s instanceof KeybindSetting k)
+        if (s instanceof dev.hafnium.client.anubis.setting.Setting doc)
+            doc.deserialize(v);
+        else if (s instanceof KeybindSetting k)
             k.bind(v.getAsJsonObject().get("code").getAsInt(), v.getAsJsonObject().get("name").getAsString());
         else if (s instanceof BoolSetting b)
             b.set(v.getAsBoolean());

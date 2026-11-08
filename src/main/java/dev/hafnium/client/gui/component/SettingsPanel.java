@@ -30,6 +30,7 @@ public final class SettingsPanel {
     static final float SPACING = 1f;
 
     private final List<SettingComponent> components = new ArrayList<>();
+    private final List<Setting<?>> owners = new ArrayList<>();
     private float x;
     private float y;
     private float w;
@@ -39,6 +40,7 @@ public final class SettingsPanel {
             SettingComponent c = create(s);
             if (c != null) {
                 components.add(c);
+                owners.add(s);
             }
         }
     }
@@ -62,24 +64,34 @@ public final class SettingsPanel {
         if (s instanceof ColorSetting c) {
             return new ColorComponent(c);
         }
+        if (s instanceof dev.hafnium.client.anubis.setting.BlockColorListSetting b) {
+            return new dev.hafnium.client.gui.setting.BlockListComponent(b);
+        }
         return null;
     }
 
+    /** Components whose setting is currently visible (see {@code Setting.visibleWhen}). */
     public List<SettingComponent> components() {
-        return components;
+        List<SettingComponent> out = new ArrayList<>(components.size());
+        for (int i = 0; i < components.size(); i++) {
+            if (owners.get(i).isVisible()) {
+                out.add(components.get(i));
+            }
+        }
+        return out;
     }
 
     /** Full height when open, including the gap below. */
     public float contentHeight() {
         float h = PAD_Y * 2 + 3f;
-        for (SettingComponent c : components) {
+        for (SettingComponent c : components()) {
             h += c.height() + SPACING;
         }
         return h;
     }
 
     public boolean isAnimating() {
-        for (SettingComponent c : components) {
+        for (SettingComponent c : components()) {
             if (c.isAnimating()) {
                 return true;
             }
@@ -94,14 +106,14 @@ public final class SettingsPanel {
         float cy = y + PAD_Y;
         float cx = x + MARGIN_X + PAD_X;
         float cw = w - (MARGIN_X + PAD_X) * 2;
-        for (SettingComponent c : components) {
+        for (SettingComponent c : components()) {
             c.layout(cx, cy, cw);
             cy += c.height() + SPACING;
         }
     }
 
     public void update(float dtMs, double mx, double my, boolean interactive) {
-        for (SettingComponent c : components) {
+        for (SettingComponent c : components()) {
             c.update(dtMs, mx, my, interactive);
         }
     }
@@ -113,13 +125,13 @@ public final class SettingsPanel {
         // Thin accent rule on the left marks which module these settings belong to.
         GuiRenderUtil.roundRect(x + MARGIN_X, y + 3f, 1.5f, Math.max(0, h - 6f), 0.75f,
                 ThemeManager.withAlpha(ThemeManager.accent(), 0.55f * openness));
-        for (SettingComponent c : components) {
+        for (SettingComponent c : components()) {
             c.render(mx, my);
         }
     }
 
     public boolean mouseClicked(double mx, double my, int button) {
-        for (SettingComponent c : components) {
+        for (SettingComponent c : components()) {
             if (c.mouseClicked(mx, my, button)) {
                 return true;
             }
@@ -128,7 +140,7 @@ public final class SettingsPanel {
     }
 
     public boolean mouseScrolled(double mx, double my, double amount) {
-        for (SettingComponent c : components) {
+        for (SettingComponent c : components()) {
             if (c.mouseScrolled(mx, my, amount)) {
                 return true;
             }
@@ -137,7 +149,7 @@ public final class SettingsPanel {
     }
 
     public boolean keyPressed(KeyEvent event) {
-        for (SettingComponent c : components) {
+        for (SettingComponent c : components()) {
             if (c.keyPressed(event)) {
                 return true;
             }

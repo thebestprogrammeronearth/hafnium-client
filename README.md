@@ -35,6 +35,8 @@ Implemented modules:
 | World | Observation | Memory limits for the world model. |
 | World | Navigation | Bounded walking: route preview, explicit start, route debug. See [docs/navigation.md](docs/navigation.md). |
 | World | Ancient Debris Finder | Outlines, tracers and waypoints for ancient debris **the server has already sent to your client**. It never predicts or reveals hidden blocks; on servers with anti-xray it finds little. |
+| Render | Block ESP | Highlights the blocks you pick; touching blocks merge into one outline. Boxes, tracers, glow, fade. From Anubis. |
+| Client | Performance | Budgets background scanning and shows FPS / render-time stats. From Anubis. |
 | Misc | Donut Wheel | Radial menu of your own commands and waypoints. |
 | Misc | Auto Sell | Sells whitelisted items with a sell command you configure per server; manual sales always ask first. |
 | Automation | Operating Mode | Manual / Assist / Autonomous. |
@@ -126,6 +128,9 @@ that hide automation from servers.
 
 Hafnium Client is free software under the [GNU General Public License v3.0](LICENSE) (GPL-3.0-only). You may use,
 change and share it; if you distribute a modified version, you must publish its source under the same license.
+
+Parts of Hafnium are ported from [Anubis](https://github.com/4ldenz/Anubis-client) by 4ldenz (GPL-3.0-only); those
+files say so in their header. See [docs/anubis-port.md](docs/anubis-port.md) for what was ported and how.
 
 The Inter font is © The Inter Project Authors, under the SIL Open Font License 1.1
 (`src/main/resources/assets/hafnium/inter-license.txt`).

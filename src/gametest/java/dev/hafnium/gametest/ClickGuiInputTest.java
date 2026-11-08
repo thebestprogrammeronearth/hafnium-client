@@ -209,7 +209,7 @@ public final class ClickGuiInputTest implements FabricClientGameTest {
         click(bar[0] + 60, bar[1] + 12, 0);
         in.typeChars("ESP");
         ctx.waitTicks(6);
-        checks.check(matches(Category.RENDER, "ESP") && matches(Category.RENDER, "StorageESP") && matches(Category.RENDER, "BlockESP"),
+        checks.check(matches(Category.RENDER, "ESP") && matches(Category.RENDER, "StorageESP") && matches(Category.RENDER, "Block ESP"),
                 "uppercase query matches case-insensitively", "render");
         checks.check(matches(Category.PLAYER, "Respawn") && !matches(Category.RENDER, "Tracers") && !matches(Category.COMBAT, "KillAura"),
                 "non-matching modules are hidden", "filter");

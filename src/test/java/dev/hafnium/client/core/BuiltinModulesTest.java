@@ -31,8 +31,9 @@ class BuiltinModulesTest {
         assertEquals(Implementation.IMPLEMENTED, manager.get(FontsModule.class).implementation());
         assertEquals(Implementation.IMPLEMENTED, manager.get(WatermarkModule.class).implementation());
         long implemented = manager.all().stream().filter(m -> m.implementation() == Implementation.IMPLEMENTED).count();
-        assertEquals(12, implemented,
-                "only ClickGUI, Fonts, Watermark, Capabilities, Server Profile, SpotifyHUD, Donut Wheel, Auto Sell, Observation, Ancient Debris Finder, Navigation and Operating Mode are implemented");
+        assertEquals(14, implemented,
+                "only ClickGUI, Fonts, Watermark, Capabilities, Server Profile, Performance, SpotifyHUD, Donut Wheel, Auto Sell, Observation, Ancient Debris Finder, Navigation, Block ESP and Operating Mode are implemented");
+        assertNotNull(manager.find("render.block-esp"), "Block ESP replaced the BlockESP placeholder");
         assertEquals(3, manager.byCategory(Category.WORLD).size());
         assertEquals(1, manager.byCategory(Category.AUTOMATION).size());
     }

@@ -10,6 +10,10 @@ public final class ColorSetting extends Setting<Integer> {
     private float brightness;
     private String hex;
 
+    public int argb() {
+        return get();
+    }
+
     public ColorSetting(String name, int argb) {
         super(name, 0xFF000000 | argb);
         setArgb(argb);

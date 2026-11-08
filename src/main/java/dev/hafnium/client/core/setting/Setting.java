@@ -14,6 +14,7 @@ public abstract class Setting<T> {
     private final String name;
     private final T defaultValue;
     private final CopyOnWriteArrayList<Consumer<T>> listeners = new CopyOnWriteArrayList<>();
+    private java.util.function.BooleanSupplier visibility;
     protected T value;
 
     protected Setting(String name, T defaultValue) {
@@ -70,6 +71,23 @@ public abstract class Setting<T> {
 
     public void reset() {
         set(defaultValue);
+    }
+
+    /** Shows the setting in the GUI only while {@code condition} holds (e.g. a sub-option of a mode). */
+    @SuppressWarnings("unchecked")
+    public <S extends Setting<T>> S visibleWhen(java.util.function.BooleanSupplier condition) {
+        this.visibility = condition;
+        return (S) this;
+    }
+
+    public boolean isVisible() {
+        return visibility == null || visibility.getAsBoolean();
+    }
+
+    /** Runs {@code listener} after every change. */
+    public Setting<T> onChange(Runnable listener) {
+        addListener(v -> listener.run());
+        return this;
     }
 
     /** @return a handle that removes the listener */

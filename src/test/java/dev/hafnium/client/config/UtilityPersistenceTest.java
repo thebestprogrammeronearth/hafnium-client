@@ -11,6 +11,13 @@ import java.util.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 class UtilityPersistenceTest {
+    /** Module settings include block lists, which read Minecraft's block registry. */
+    @org.junit.jupiter.api.BeforeAll
+    static void bootstrapMinecraft() {
+        net.minecraft.SharedConstants.tryDetectVersion();
+        net.minecraft.server.Bootstrap.bootStrap();
+    }
+
     @Test
     void oldBackgroundWriteCannotOverwriteShutdownFlush(@TempDir Path dir) throws Exception {
         List<Runnable> workers = new ArrayList<>();
